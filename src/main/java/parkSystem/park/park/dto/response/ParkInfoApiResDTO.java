@@ -2,10 +2,8 @@ package parkSystem.park.park.dto.response;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
-public class ParkApiResDTO {
+public class ParkInfoApiResDTO {
     String pkNam;     // 주차장명
     String jibunAddr; // 주차장 주소
     Integer pkCnt;     // 주차장 댓수

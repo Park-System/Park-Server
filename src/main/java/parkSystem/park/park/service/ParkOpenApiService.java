@@ -5,21 +5,26 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
-import parkSystem.park.park.dto.response.ParkApiResDTO;
-import parkSystem.park.park.repository.ParkRepository;
+import parkSystem.park.park.domain.ParkingSpot;
+import parkSystem.park.park.dto.response.ParkInfoApiResDTO;
+import parkSystem.park.park.repository.ParkInfoRepository;
+import parkSystem.park.park.repository.ParkSpotRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,7 +34,9 @@ import java.util.Map;
 public class ParkOpenApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ParkRepository parkRepository;
+    private final ParkInfoRepository parkInfoRepository;
+    private final ParkSpotRepository parkSpotRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     String apiUrl = "http://apis.data.go.kr/6260000/BusanPblcPrkngInfoService/getPblcPrkngInfo";
     String serviceKey = "WYIUcexBXmPnj68GHRo%2FviP5RiWfySCWYYgzSx1QePp6MvhonxE6Yb8UhGhBBsKZf%2BcFF7esB1IQRtcAdGHyDQ%3D%3D";
@@ -38,6 +45,7 @@ public class ParkOpenApiService {
 
     public void getParkInfo() throws IOException {
 
+        //공공 API 호출 url 생성
         StringBuilder sb = new StringBuilder(apiUrl);
         sb.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
         sb.append("&" + URLEncoder.encode("resultType", "UTF-8") + "=" + URLEncoder.encode(resultType, "UTF-8"));
@@ -53,6 +61,8 @@ public class ParkOpenApiService {
         } else {
             rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
         }
+
+        // json 데이터 읽어오기
         StringBuilder resultSb = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
@@ -60,11 +70,20 @@ public class ParkOpenApiService {
         }
         rd.close();
         conn.disconnect();
+
+        // json 스트링으로 변환
         String result= resultSb.toString();
-        apiParsingAndSave(result);
+
+        // ParkInfo 테이블 저장
+        parkInfoRepository.saveAll(apiParsingAndSave(result));
+        // ParkSpot 테이블 저장
+        parkSpotSave();
     }
 
-    public void apiParsingAndSave(String result) throws JsonProcessingException {
+    public List<ParkingInfo> apiParsingAndSave(String result) throws JsonProcessingException {
+
+        List<ParkingInfo> list = new ArrayList<>();
+
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Map<String, Object> map = objectMapper.readValue(result, Map.class);
         Map<String, Object> responseMap = (Map<String, Object>) map.get("response");
@@ -73,24 +92,59 @@ public class ParkOpenApiService {
 
         Object o = itemsMap.get("item");
         String s = objectMapper.writeValueAsString(o);
-        ParkApiResDTO[] parkApiResDTOS = objectMapper.readValue(s, ParkApiResDTO[].class);
+        ParkInfoApiResDTO[] parkInfoApiResDTOS = objectMapper.readValue(s, ParkInfoApiResDTO[].class);
 
-        for (ParkApiResDTO parkApiResDTO : parkApiResDTOS) {
-            String ftDay = parkApiResDTO.getFtDay();
-            String jibunAddr = parkApiResDTO.getJibunAddr();
-            String pkFm = parkApiResDTO.getPkFm();
-            Integer pkCnt = parkApiResDTO.getPkCnt();
-            String pkNam = parkApiResDTO.getPkNam();
-            String satEndTe = parkApiResDTO.getSatEndTe();
-            String satSrtTe = parkApiResDTO.getSatSrtTe();
-            String svcEndTe = parkApiResDTO.getSvcEndTe();
-            String svcSrtTe = parkApiResDTO.getSvcSrtTe();
-            String temMin = parkApiResDTO.getTemMin();
-            String spclNote = parkApiResDTO.getSpclNote();
+        for (ParkInfoApiResDTO parkInfoApiResDTO : parkInfoApiResDTOS) {
+            String ftDay = parkInfoApiResDTO.getFtDay();
+            String jibunAddr = parkInfoApiResDTO.getJibunAddr();
+            String pkFm = parkInfoApiResDTO.getPkFm();
+            Integer pkCnt = parkInfoApiResDTO.getPkCnt();
+            String pkNam = parkInfoApiResDTO.getPkNam();
+            String satEndTe = parkInfoApiResDTO.getSatEndTe();
+            String satSrtTe = parkInfoApiResDTO.getSatSrtTe();
+            String svcEndTe = parkInfoApiResDTO.getSvcEndTe();
+            String svcSrtTe = parkInfoApiResDTO.getSvcSrtTe();
+            String temMin = parkInfoApiResDTO.getTemMin();
+            String spclNote = parkInfoApiResDTO.getSpclNote();
             ParkingInfo parkingInfo = new ParkingInfo(pkNam, jibunAddr, pkFm, pkCnt, svcSrtTe, svcEndTe, satSrtTe, satEndTe, temMin, ftDay, spclNote);
-            parkRepository.save(parkingInfo);
+            list.add(parkingInfo);
         }
 
+        return list;
+    }
+
+    public void parkSpotSave() {
+        List<ParkingInfo> allParkingInfo = parkInfoRepository.findAll();
+
+        List<ParkingSpot> parkingSpots = new ArrayList<>();
+
+        for (ParkingInfo parkingInfo : allParkingInfo) {
+            int parkingAmount = parkingInfo.getParkingAmount();
+            for (int i = 1; i <= parkingAmount; i++) {
+                ParkingSpot parkingSpot = ParkingSpot.builder()
+                .parkingSpotName("Spot " + i)
+                .parkingInfo(parkingInfo)
+                .build();
+                parkingSpots.add(parkingSpot);
+            }
+        }
+
+        // Bulk Insert
+        String sql = "INSERT INTO parking_spot (parking_spot_name, parking_info_id) VALUES (?, ?)";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ParkingSpot parkingSpot = parkingSpots.get(i);
+                ps.setString(1, parkingSpot.getParkingSpotName());
+                ps.setLong(2, parkingSpot.getParkingInfo().getId());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return parkingSpots.size();
+            }
+        });
     }
 
 }
