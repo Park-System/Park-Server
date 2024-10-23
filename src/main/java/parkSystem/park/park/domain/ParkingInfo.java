@@ -26,13 +26,13 @@ public class ParkingInfo {
 
     private Integer parkingAmount;
 
-    private LocalDateTime weekDaysStartTime;
+    private String weekDaysStartTime;
 
-    private LocalDateTime weekDaysEndTime;
+    private String weekDaysEndTime;
 
-    private LocalDateTime weekendStartTime;
+    private String weekendStartTime;
 
-    private LocalDateTime weekendEndTime;
+    private String weekendEndTime;
 
     private String basicRate;
 
@@ -40,7 +40,7 @@ public class ParkingInfo {
 
     private String specialNote;
 
-    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, LocalDateTime weekDaysStartTime, LocalDateTime weekDaysEndTime, LocalDateTime weekendStartTime, LocalDateTime weekendEndTime, String basicRate, String dayTicketPrice, String specialNote) {
+    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime, String basicRate, String dayTicketPrice, String specialNote) {
         this.parkingName = parkingName;
         this.parkingAddress = parkingAddress;
         this.parkType = parkType;
