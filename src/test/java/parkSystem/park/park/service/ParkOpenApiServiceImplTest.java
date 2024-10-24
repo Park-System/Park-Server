@@ -6,16 +6,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class ParkOpenApiServiceTest {
+class ParkOpenApiServiceImplTest {
 
     @Autowired
-    ParkOpenApiService parkOpenApiService;
+    ParkOpenApiServiceImpl parkOpenApiServiceImpl;
     @Test
     void test() throws IOException {
-        parkOpenApiService.getParkInfo();
+        parkOpenApiServiceImpl.getParkInfo();
     }
 
 }

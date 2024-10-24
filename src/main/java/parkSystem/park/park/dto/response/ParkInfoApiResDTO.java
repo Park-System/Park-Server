@@ -1,8 +1,9 @@
 package parkSystem.park.park.dto.response;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class ParkInfoApiResDTO {
     String pkNam;     // 주차장명
     String jibunAddr; // 주차장 주소
