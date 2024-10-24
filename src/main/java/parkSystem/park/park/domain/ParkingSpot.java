@@ -2,6 +2,7 @@ package parkSystem.park.park.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.park.domain.enums.ParkingType;
@@ -26,5 +27,10 @@ public class ParkingSpot {
     @JoinColumn(name = "parking_info_id")
     private ParkingInfo parkingInfo;
 
+    @Builder
+    public ParkingSpot(String parkingSpotName, ParkingInfo parkingInfo) {
+        this.parkingSpotName = parkingSpotName;
+        this.parkingInfo = parkingInfo;
+    }
 
 }
