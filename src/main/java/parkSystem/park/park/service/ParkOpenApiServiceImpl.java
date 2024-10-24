@@ -43,6 +43,7 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
     String resultType = "json";
     String numOfRows = "615";
 
+    @Override
     public void getParkInfo() throws IOException {
 
         //공공 API 호출 url 생성
@@ -80,6 +81,7 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
         parkSpotSave();
     }
 
+    @Override
     public List<ParkingInfo> apiParsingAndSave(String result) throws JsonProcessingException {
 
         List<ParkingInfo> list = new ArrayList<>();
@@ -113,6 +115,7 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
         return list;
     }
 
+    @Override
     public void parkSpotSave() {
         List<ParkingInfo> allParkingInfo = parkInfoRepository.findAll();
 
