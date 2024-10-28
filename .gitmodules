@@ -1,0 +1,3 @@
+[submodule "Park-Server-SubM"]
+	path = Park-Server-SubM
+	url = https://github.com/Park-System/Park-Server-SubM.git
