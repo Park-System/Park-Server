@@ -18,7 +18,7 @@ public class ParkRepositoryTest {
 
 
     @Test
-    @DisplayName("h2 데이터베이스를 테스트를 위한 테스트")
+    @DisplayName("h2 데이터베이스를 테스트를 위한 테스트f")
     public void test() throws Exception {
        //given
         ParkingInfo parkingInfo = new ParkingInfo(
