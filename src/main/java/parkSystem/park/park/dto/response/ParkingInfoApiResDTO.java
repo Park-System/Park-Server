@@ -3,8 +3,7 @@ package parkSystem.park.park.dto.response;
 import lombok.Getter;
 
 @Getter
-public class ParkInfoResDTO {
-
+public class ParkingInfoApiResDTO {
     String pkNam;     // 주차장명
     String jibunAddr; // 주차장 주소
     Integer pkCnt;     // 주차장 댓수
@@ -15,5 +14,7 @@ public class ParkInfoResDTO {
     String satEndTe;  // 토요일 종료 시간
     String ftDay;     // 1일 주차권 요금
     String deposit; // 보증금
+
+
 
 }

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
-import parkSystem.park.park.dto.response.ParkInfoApiResDTO;
-import parkSystem.park.park.repository.ParkInfoRepository;
-import parkSystem.park.park.repository.ParkSpotRepository;
+import parkSystem.park.park.dto.response.ParkingInfoApiResDTO;
+import parkSystem.park.park.repository.ParkingInfoRepository;
+import parkSystem.park.park.repository.ParkingSpotRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,11 +31,11 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ParkOpenApiServiceImpl implements ParkOpenApiService{
+public class ParkingOpenApiServiceImpl implements ParkingOpenApiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ParkInfoRepository parkInfoRepository;
-    private final ParkSpotRepository parkSpotRepository;
+    private final ParkingInfoRepository parkInfoRepository;
+    private final ParkingSpotRepository parkSpotRepository;
     private final JdbcTemplate jdbcTemplate;
 
     String apiUrl = "http://apis.data.go.kr/6260000/BusanPblcPrkngInfoService/getPblcPrkngInfo";
@@ -94,9 +94,9 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
 
         Object o = itemsMap.get("item");
         String s = objectMapper.writeValueAsString(o);
-        ParkInfoApiResDTO[] parkInfoApiResDTOS = objectMapper.readValue(s, ParkInfoApiResDTO[].class);
+        ParkingInfoApiResDTO[] parkInfoApiResDTOS = objectMapper.readValue(s, ParkingInfoApiResDTO[].class);
 
-        for (ParkInfoApiResDTO parkInfoApiResDTO : parkInfoApiResDTOS) {
+        for (ParkingInfoApiResDTO parkInfoApiResDTO : parkInfoApiResDTOS) {
             String ftDay = parkInfoApiResDTO.getFtDay();
             String jibunAddr = parkInfoApiResDTO.getJibunAddr();
             String pkFm = parkInfoApiResDTO.getPkFm();
