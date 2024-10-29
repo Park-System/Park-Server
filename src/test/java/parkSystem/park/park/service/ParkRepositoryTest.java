@@ -30,9 +30,8 @@ public class ParkRepositoryTest {
                 "20:00",                    // weekDaysEndTime
                 "09:00",                    // weekendStartTime
                 "22:00",                    // weekendEndTime
-                "5.00",                     // basicRate
                 "20.00",                    // dayTicketPrice
-                "Free on Sundays"           // specialNote
+                "1000"
         );
 
        //when

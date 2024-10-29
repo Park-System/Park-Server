@@ -13,7 +13,7 @@ public class ParkInfoResDTO {
     String svcEndTe;  // 평일 종료 시간
     String satSrtTe;  // 토요일 시작 시간
     String satEndTe;  // 토요일 종료 시간
-    String temMin;    // 주차 기본 요금
     String ftDay;     // 1일 주차권 요금
-    String spclNote;
+    String deposit; // 보증금
+
 }

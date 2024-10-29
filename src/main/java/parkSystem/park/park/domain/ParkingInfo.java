@@ -38,7 +38,9 @@ public class ParkingInfo {
 
     private String dayTicketPrice; // 당일 티켓 요금
 
-    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime,  String dayTicketPrice) {
+    private String deposit; // 보증금
+
+    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime,  String dayTicketPrice, String deposit) {
         this.parkingName = parkingName;
         this.parkingAddress = parkingAddress;
         this.parkType = parkType;
@@ -48,5 +50,6 @@ public class ParkingInfo {
         this.weekendStartTime = weekendStartTime;
         this.weekendEndTime = weekendEndTime;
         this.dayTicketPrice = dayTicketPrice;
+        this.deposit = deposit;
     }
 }

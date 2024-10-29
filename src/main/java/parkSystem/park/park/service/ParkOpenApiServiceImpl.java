@@ -106,7 +106,7 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
             String satSrtTe = parkInfoApiResDTO.getSatSrtTe();
             String svcEndTe = parkInfoApiResDTO.getSvcEndTe();
             String svcSrtTe = parkInfoApiResDTO.getSvcSrtTe();
-            ParkingInfo parkingInfo = new ParkingInfo(pkNam, jibunAddr, pkFm, pkCnt, svcSrtTe, svcEndTe, satSrtTe, satEndTe, ftDay);
+            ParkingInfo parkingInfo = new ParkingInfo(pkNam, jibunAddr, pkFm, pkCnt, svcSrtTe, svcEndTe, satSrtTe, satEndTe, ftDay,"1000");
             list.add(parkingInfo);
         }
 
