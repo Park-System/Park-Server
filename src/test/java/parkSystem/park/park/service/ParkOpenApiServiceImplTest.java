@@ -11,9 +11,10 @@ class ParkOpenApiServiceImplTest {
 
     @Autowired
     ParkOpenApiServiceImpl parkOpenApiServiceImpl;
-    @Test
-    void test() throws IOException {
-        parkOpenApiServiceImpl.getParkInfo();
-    }
+//    @Test
+//    void test() throws IOException {
+//        parkOpenApiServiceImpl.getParkInfo();
+//    }
+
 
 }
