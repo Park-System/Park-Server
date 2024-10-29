@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
-import parkSystem.park.park.repository.ParkInfoRepository;
+import parkSystem.park.park.repository.ParkingInfoRepository;
 
 @SpringBootTest
 @Transactional
-public class ParkRepositoryTest {
+public class ParkingRepositoryTest {
 
     @Autowired
-    private ParkInfoRepository parkInfoRepository;
+    private ParkingInfoRepository parkInfoRepository;
 
 
     @Test
