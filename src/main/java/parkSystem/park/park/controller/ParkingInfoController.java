@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@Tag(name = "Parking", description = "Parking API")
+@Tag(name = "ParkingInfo", description = "ParkingInfo API")
 @RequestMapping("/parking")
 public class ParkingInfoController {
 
