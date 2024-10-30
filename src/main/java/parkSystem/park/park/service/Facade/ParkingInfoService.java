@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
-import parkSystem.park.park.service.ParkingInfoQueryService;
+import parkSystem.park.park.service.ParkingInfo.ParkingInfoQueryService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ParkingService {
+public class ParkingInfoService {
 
     private final ParkingInfoQueryService parkingInfoQueryService;
 

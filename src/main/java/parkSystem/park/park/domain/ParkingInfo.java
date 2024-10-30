@@ -40,6 +40,7 @@ public class ParkingInfo {
 
     private String deposit; // 보증금
 
+    @Builder
     public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime,  String dayTicketPrice, String deposit) {
         this.parkingName = parkingName;
         this.parkingAddress = parkingAddress;

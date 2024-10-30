@@ -1,4 +1,4 @@
-package parkSystem.park.park.service;
+package parkSystem.park.park.service.ParkingInfo;
 
 public interface ParkingInfoCommandService {
 

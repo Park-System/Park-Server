@@ -1,4 +1,4 @@
-package parkSystem.park.park.service;
+package parkSystem.park.park.service.ParkingInfo;
 
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;

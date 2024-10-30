@@ -1,6 +1,5 @@
 package parkSystem.park.park.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
+import parkSystem.park.park.service.ParkingInfo.ParkingInfoQueryService;
 
 import java.util.List;
 

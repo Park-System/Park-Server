@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
-import parkSystem.park.park.service.Facade.ParkingService;
+import parkSystem.park.park.service.Facade.ParkingInfoService;
 
 import java.util.List;
 
@@ -21,11 +21,12 @@ import java.util.List;
 @RequestMapping("/parking")
 public class ParkingInfoController {
 
-    private final ParkingService parkingService;
+    private final ParkingInfoService parkingService;
 
 
     @GetMapping
     public ResponseEntity<List<ParkingAllInfoResDTO>> getParkingAll() {
+        log.info("주차장 모두 조회");
         List<ParkingAllInfoResDTO> parkingAllInfoResDTOS = parkingService.findAllParkingInfo();
 
         return ResponseEntity.ok(parkingAllInfoResDTOS);
@@ -33,10 +34,12 @@ public class ParkingInfoController {
 
     @GetMapping("/{parkingId}")
     public ResponseEntity<ParkingInfoResDTO> getParkingInfo(@PathVariable Long parkingId) {
+        log.info("해당 주차 세부내용");
         ParkingInfoResDTO parkingInfoResDTO = parkingService.findBypParkingId(parkingId);
 
         return ResponseEntity.ok(parkingInfoResDTO);
     }
+
 
 
 
