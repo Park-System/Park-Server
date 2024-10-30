@@ -97,15 +97,15 @@ public class ParkingOpenApiServiceImpl implements ParkingOpenApiService {
         ParkingInfoApiResDTO[] parkInfoApiResDTOS = objectMapper.readValue(s, ParkingInfoApiResDTO[].class);
 
         for (ParkingInfoApiResDTO parkInfoApiResDTO : parkInfoApiResDTOS) {
-            String ftDay = parkInfoApiResDTO.getFtDay();
-            String jibunAddr = parkInfoApiResDTO.getJibunAddr();
-            String pkFm = parkInfoApiResDTO.getPkFm();
-            Integer pkCnt = parkInfoApiResDTO.getPkCnt();
-            String pkNam = parkInfoApiResDTO.getPkNam();
-            String satEndTe = parkInfoApiResDTO.getSatEndTe();
-            String satSrtTe = parkInfoApiResDTO.getSatSrtTe();
-            String svcEndTe = parkInfoApiResDTO.getSvcEndTe();
-            String svcSrtTe = parkInfoApiResDTO.getSvcSrtTe();
+            String ftDay = parkInfoApiResDTO.ftDay();
+            String jibunAddr = parkInfoApiResDTO.jibunAddr();
+            String pkFm = parkInfoApiResDTO.pkFm();
+            Integer pkCnt = parkInfoApiResDTO.pkCnt();
+            String pkNam = parkInfoApiResDTO.pkNam();
+            String satEndTe = parkInfoApiResDTO.satEndTe();
+            String satSrtTe = parkInfoApiResDTO.satSrtTe();
+            String svcEndTe = parkInfoApiResDTO.svcEndTe();
+            String svcSrtTe = parkInfoApiResDTO.svcSrtTe();
             ParkingInfo parkingInfo = new ParkingInfo(pkNam, jibunAddr, pkFm, pkCnt, svcSrtTe, svcEndTe, satSrtTe, satEndTe, ftDay,"1000");
             list.add(parkingInfo);
         }

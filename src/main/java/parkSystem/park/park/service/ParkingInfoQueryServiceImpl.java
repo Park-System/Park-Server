@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
-import parkSystem.park.park.dto.response.ParkingInfoApiResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
+
 import java.util.List;
 
 @Service

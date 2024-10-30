@@ -84,8 +84,8 @@ class ParkingInfoQueryServiceImplTest {
         ParkingInfoResDTO parkingInfoResDTO = parkQueryService.parkInfo(saveParkingInfo.getId());
 
         //then
-        assertThat(parkingInfoResDTO.getPkNam()).isEqualTo("Downtown Parking");
-        assertThat(parkingInfoResDTO.getPkCnt()).isEqualTo(100);
+        assertThat(parkingInfoResDTO.pkNam()).isEqualTo("Downtown Parking");
+        assertThat(parkingInfoResDTO.pkCnt()).isEqualTo(100);
     }
 
 }
