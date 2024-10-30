@@ -1,5 +1,5 @@
 package parkSystem.park.coupon.domain.enums;
 
-public enum CouponStatus {
-    ON, OFF
+public enum EventStatus {
+    ON,OFF
 }

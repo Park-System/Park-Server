@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import parkSystem.park.coupon.domain.enums.CouponStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +31,12 @@ public class Coupon {
 
     @Enumerated(EnumType.STRING)
     private CouponStatus status;
+
+    @OneToMany(mappedBy = "coupon")
+    private List<MemberCoupon> memberCoupons = new ArrayList<>();
+
+    @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
+    private CouponEvent couponEvent;
 
     public Coupon(String couponName, LocalDateTime startDate, Integer disCountRate, LocalDateTime endDate, CouponStatus status) {
         this.couponName = couponName;
