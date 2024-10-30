@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
+import parkSystem.park.park.dto.response.ParkingInfoApiResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
 import java.util.List;
@@ -22,14 +23,14 @@ public class ParkingInfoQueryServiceImpl implements ParkingInfoQueryService {
     @Override
     public List<ParkingAllInfoResDTO> parkList() {
       return  parkInfoRepository.findAll().stream()
-                .map(ParkingAllInfoResDTO::new).toList();
+                .map(ParkingAllInfoResDTO::toDto).toList();
     }
 
     @Override
     public ParkingInfoResDTO parkInfo(Long parkInfoId) {
         ParkingInfo findByParkingInfo = parkInfoRepository.findById(parkInfoId).orElseThrow(() -> new IllegalArgumentException("해당 아이디는 없습니다"));
 
-        return new ParkingInfoResDTO(findByParkingInfo);
+        return ParkingInfoResDTO.toDto(findByParkingInfo);
 
     }
 }
