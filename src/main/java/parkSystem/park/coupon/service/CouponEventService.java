@@ -25,7 +25,9 @@ public class CouponEventService {
         LocalDateTime endDate = couponEventReqDTO.getEnd_date();
         LocalDateTime now = LocalDateTime.now();
         EventStatus eventStatus;
-        if((now.isEqual(startDate) || now.isBefore(startDate)) && (now.isEqual(endDate) || now.isAfter(endDate))){
+
+        // 이벤트 시작, 종료일과 현재일을 비교하여 이벤트의 상태 여부 결정
+        if((now.isEqual(startDate) || now.isAfter(startDate)) && (now.isEqual(endDate) || now.isBefore(endDate))){
             eventStatus=EventStatus.ON;
         }else eventStatus=EventStatus.OFF;
 

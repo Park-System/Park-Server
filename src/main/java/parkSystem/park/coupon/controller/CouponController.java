@@ -18,6 +18,7 @@ public class CouponController {
 
     @PostMapping("/coupon/register")
     public ResponseEntity<CommonResponse> createCoupon(@RequestBody CouponReqDTO couponReqDTO){
+        // 쿠픈 등록 로직
         couponService.createCoupon(couponReqDTO);
         CommonResponse commonResponse = new CommonResponse("200 OK", "쿠폰이 등록되었습니다.");
         return new ResponseEntity<>(commonResponse, HttpStatus.OK);
