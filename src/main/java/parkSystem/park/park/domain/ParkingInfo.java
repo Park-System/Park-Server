@@ -20,29 +20,28 @@ public class ParkingInfo {
     @Column(name = "parking_info_id")
     private Long id;
 
-    private String parkingName;
+    private String parkingName; //주자창 이름
 
-    private String parkingAddress;
+    private String parkingAddress; // 주차 주소
 
-    private String parkType;
+    private String parkType; // 주차 타입
 
-    private Integer parkingAmount;
+    private Integer parkingAmount; // 현재 주차 숫자
 
-    private String weekDaysStartTime;
+    private String weekDaysStartTime; //주차 평일 시작 시간
 
-    private String weekDaysEndTime;
+    private String weekDaysEndTime;  //주차 평일 마감 시간
 
-    private String weekendStartTime;
+    private String weekendStartTime; //주차 주말 시작 시간
 
-    private String weekendEndTime;
+    private String weekendEndTime; // 주자 마감 시간
 
-    private String basicRate;
+    private String dayTicketPrice; // 당일 티켓 요금
 
-    private String dayTicketPrice;
+    private String deposit; // 보증금
 
-    private String specialNote;
-
-    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime, String basicRate, String dayTicketPrice, String specialNote) {
+    @Builder
+    public ParkingInfo(String parkingName, String parkingAddress, String parkType, Integer parkingAmount, String weekDaysStartTime, String weekDaysEndTime, String weekendStartTime, String weekendEndTime,  String dayTicketPrice, String deposit) {
         this.parkingName = parkingName;
         this.parkingAddress = parkingAddress;
         this.parkType = parkType;
@@ -51,8 +50,7 @@ public class ParkingInfo {
         this.weekDaysEndTime = weekDaysEndTime;
         this.weekendStartTime = weekendStartTime;
         this.weekendEndTime = weekendEndTime;
-        this.basicRate = basicRate;
         this.dayTicketPrice = dayTicketPrice;
-        this.specialNote = specialNote;
+        this.deposit = deposit;
     }
 }

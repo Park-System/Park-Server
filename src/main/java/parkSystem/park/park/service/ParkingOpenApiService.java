@@ -6,7 +6,7 @@ import parkSystem.park.park.domain.ParkingInfo;
 import java.io.IOException;
 import java.util.List;
 
-public interface ParkOpenApiService {
+public interface ParkingOpenApiService {
 
     public void getParkInfo() throws IOException;
     public List<ParkingInfo> apiParsingAndSave(String result) throws JsonProcessingException;
