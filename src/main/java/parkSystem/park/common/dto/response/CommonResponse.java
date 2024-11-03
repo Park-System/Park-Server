@@ -1,11 +1,5 @@
 package parkSystem.park.common.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public record CommonResponse(String code, String message) {
 
-@Getter
-@AllArgsConstructor
-public class CommonResponse {
-    private String code;
-    private String message;
 }

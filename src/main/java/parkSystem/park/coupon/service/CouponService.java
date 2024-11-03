@@ -17,12 +17,12 @@ public class CouponService {
     private final CouponRepository couponRepository;
     public Coupon createCoupon(CouponReqDTO couponReqDTO){
         Coupon coupon = Coupon.builder()
-                .couponName(couponReqDTO.getCouponName())
-                .disCountRate(couponReqDTO.getDisCountRate())
-                .startDate(couponReqDTO.getStart_date())
-                .endDate(couponReqDTO.getEnd_date())
-                .total_count(couponReqDTO.getTotal_count())
-                .count(couponReqDTO.getTotal_count())
+                .couponName(couponReqDTO.couponName())
+                .disCountRate(couponReqDTO.disCountRate())
+                .startDate(couponReqDTO.start_date())
+                .endDate(couponReqDTO.end_date())
+                .total_count(couponReqDTO.total_count())
+                .count(couponReqDTO.total_count())
                 .build();
 
         return couponRepository.save(coupon);

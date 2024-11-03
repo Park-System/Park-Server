@@ -35,9 +35,6 @@ public class Coupon {
     private int total_count;
     private int count;
 
-    @OneToMany(mappedBy = "coupon")
-    private List<MemberCoupon> memberCoupons = new ArrayList<>();
-
     @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
     private CouponEvent couponEvent;
 

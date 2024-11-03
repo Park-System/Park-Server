@@ -21,8 +21,8 @@ public class CouponEventService {
 
     public CouponEvent createEvent(CouponEventReqDTO couponEventReqDTO){
 
-        LocalDateTime startDate = couponEventReqDTO.getStart_date();
-        LocalDateTime endDate = couponEventReqDTO.getEnd_date();
+        LocalDateTime startDate = couponEventReqDTO.start_date();
+        LocalDateTime endDate = couponEventReqDTO.end_date();
         LocalDateTime now = LocalDateTime.now();
         EventStatus eventStatus;
 
@@ -32,12 +32,12 @@ public class CouponEventService {
         }else eventStatus=EventStatus.OFF;
 
         CouponEvent couponEvent = CouponEvent.builder()
-                .event_title(couponEventReqDTO.getEvent_title())
-                .content(couponEventReqDTO.getContent())
-                .start_date(couponEventReqDTO.getStart_date())
-                .end_date(couponEventReqDTO.getEnd_date())
+                .event_title(couponEventReqDTO.event_title())
+                .content(couponEventReqDTO.content())
+                .start_date(couponEventReqDTO.start_date())
+                .end_date(couponEventReqDTO.end_date())
                 .status(eventStatus)
-                .coupon(couponEventReqDTO.getCoupon())
+                .coupon(couponEventReqDTO.coupon())
                 .build();
 
         return couponEventRepository.save(couponEvent);
