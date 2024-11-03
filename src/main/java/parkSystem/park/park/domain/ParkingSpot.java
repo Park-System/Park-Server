@@ -27,10 +27,11 @@ public class ParkingSpot {
     @JoinColumn(name = "parking_info_id")
     private ParkingInfo parkingInfo;
 
+
     @Builder
-    public ParkingSpot(String parkingSpotName, ParkingInfo parkingInfo) {
+    public ParkingSpot(ParkingType parkingType, String parkingSpotName, ParkingInfo parkingInfo) {
+        this.parkingType = parkingType;
         this.parkingSpotName = parkingSpotName;
         this.parkingInfo = parkingInfo;
     }
-
 }

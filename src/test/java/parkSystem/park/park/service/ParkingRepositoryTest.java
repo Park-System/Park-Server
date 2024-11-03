@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
-import parkSystem.park.park.repository.ParkInfoRepository;
+import parkSystem.park.park.repository.ParkingInfoRepository;
 
 @SpringBootTest
 @Transactional
-public class ParkRepositoryTest {
+public class ParkingRepositoryTest {
 
     @Autowired
-    private ParkInfoRepository parkInfoRepository;
+    private ParkingInfoRepository parkInfoRepository;
 
 
     @Test
@@ -30,9 +30,8 @@ public class ParkRepositoryTest {
                 "20:00",                    // weekDaysEndTime
                 "09:00",                    // weekendStartTime
                 "22:00",                    // weekendEndTime
-                "5.00",                     // basicRate
                 "20.00",                    // dayTicketPrice
-                "Free on Sundays"           // specialNote
+                "1000"
         );
 
        //when
