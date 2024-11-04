@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
-import parkSystem.park.coupon.dto.request.CouponReqDTO;
-import parkSystem.park.coupon.service.CouponEventService;
+import parkSystem.park.coupon.service.couponEvent.CouponEventService;
 
 @RestController
 @RequiredArgsConstructor

@@ -4,12 +4,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.coupon.domain.Coupon;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
-
-import static org.junit.jupiter.api.Assertions.*;
+import parkSystem.park.coupon.service.coupon.CouponService;
 
 @SpringBootTest
 @Transactional

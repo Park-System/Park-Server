@@ -1,4 +1,4 @@
-package parkSystem.park.coupon.service;
+package parkSystem.park.coupon.service.couponEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
