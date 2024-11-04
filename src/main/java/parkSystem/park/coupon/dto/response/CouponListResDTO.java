@@ -13,8 +13,6 @@ public record CouponListResDTO(
 
         String end_date,
 
-        CouponStatus couponStatus,
-
         int total_count,
 
         int count) {
@@ -22,7 +20,7 @@ public record CouponListResDTO(
     public static CouponListResDTO toDto(Coupon coupon){
         return new CouponListResDTO(
                 coupon.getCouponName(), coupon.getDisCountRate(), coupon.getStartDate(), coupon.getEndDate(),
-                coupon.getStatus(), coupon.getTotal_count(), coupon.getCount()
+                coupon.getTotal_count(), coupon.getCount()
         );
     }
 }

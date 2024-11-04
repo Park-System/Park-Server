@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import parkSystem.park.coupon.domain.enums.CouponStatus;
 import parkSystem.park.member.domain.Member;
 
 @Entity
@@ -16,6 +17,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "memberCoupon_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private CouponStatus status;
+
+    private int count;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
