@@ -1,6 +1,7 @@
 package parkSystem.park.coupon.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,6 +36,7 @@ public class Coupon {
     private int count;
 
     @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
+    @JsonIgnore
     private CouponEvent couponEvent;
 
     @Builder

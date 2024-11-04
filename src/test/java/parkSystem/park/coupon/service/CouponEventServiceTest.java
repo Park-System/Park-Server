@@ -9,6 +9,8 @@ import parkSystem.park.coupon.domain.Coupon;
 import parkSystem.park.coupon.domain.CouponEvent;
 import parkSystem.park.coupon.domain.enums.EventStatus;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
+import parkSystem.park.coupon.dto.request.CouponReqDTO;
+import parkSystem.park.coupon.service.coupon.CouponService;
 import parkSystem.park.coupon.service.couponEvent.CouponEventService;
 
 import java.time.LocalDateTime;
@@ -21,18 +23,23 @@ class CouponEventServiceTest {
     @Autowired
     CouponEventService couponEventService;
 
+    @Autowired
+    CouponService couponService;
+
     @Test
     void createEvent() {
 
         //given
-        Coupon coupon = Coupon.builder()
+       /* Coupon coupon = Coupon.builder()
                 .couponName("테스트쿠폰")
                 .disCountRate(50)
                 .startDate("2024-10-31")
                 .endDate("2024-12-31")
                 .total_count(30)
                 .count(30)
-                .build();
+                .build();*/
+        CouponReqDTO couponReqDTO = new CouponReqDTO("테스트쿠폰", "2024-10-30", "2099-12-31", 30, 50);
+        Coupon newCoupon = couponService.createCoupon(couponReqDTO);
 
         // 문자열
         String start = "2024-10-30";
@@ -42,7 +49,7 @@ class CouponEventServiceTest {
         LocalDateTime start_date = LocalDateTime.parse(start + "T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         LocalDateTime end_date = LocalDateTime.parse(end + "T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        CouponEventReqDTO couponEventReqDTO = new CouponEventReqDTO("테스트 이벤트", "주차장 선착순 쿠폰 이벤트", start_date, end_date, coupon);
+        CouponEventReqDTO couponEventReqDTO = new CouponEventReqDTO("테스트 이벤트", "주차장 선착순 쿠폰 이벤트", start_date, end_date, newCoupon.getId());
 
         //when
         CouponEvent event = couponEventService.createEvent(couponEventReqDTO);

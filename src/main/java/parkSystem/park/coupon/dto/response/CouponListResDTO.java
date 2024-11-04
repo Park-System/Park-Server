@@ -1,7 +1,6 @@
 package parkSystem.park.coupon.dto.response;
 
 import parkSystem.park.coupon.domain.Coupon;
-import parkSystem.park.coupon.domain.enums.CouponStatus;
 
 public record CouponListResDTO(
 
