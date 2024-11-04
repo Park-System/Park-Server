@@ -36,7 +36,6 @@ public class Coupon {
     private int count;
 
     @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
-    @JsonIgnore
     private CouponEvent couponEvent;
 
     @Builder
