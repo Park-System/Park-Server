@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ParkingOpenApiServiceImplTest {
 
     @Autowired
-    ParkingOpenApiServiceImpl parkOpenApiServiceImpl;
+    ParkingOpenApiService parkOpenApiServiceImpl;
 //    @Test
 //    void test() throws IOException {
 //        parkOpenApiServiceImpl.getParkInfo();
