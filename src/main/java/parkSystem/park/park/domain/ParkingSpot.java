@@ -27,6 +27,9 @@ public class ParkingSpot {
     @JoinColumn(name = "parking_info_id")
     private ParkingInfo parkingInfo;
 
+    //주차 가능 여부
+    private Boolean spotAvailable;
+
 
     @Builder
     public ParkingSpot(ParkingType parkingType, String parkingSpotName, ParkingInfo parkingInfo) {
