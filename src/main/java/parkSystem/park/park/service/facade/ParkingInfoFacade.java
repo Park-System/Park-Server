@@ -2,8 +2,8 @@ package parkSystem.park.park.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
-import parkSystem.park.park.dto.response.ParkingInfoResDTO;
+import parkSystem.park.park.controller.dto.response.ParkingAllInfoResDTO;
+import parkSystem.park.park.controller.dto.response.ParkingInfoResDTO;
 import parkSystem.park.park.service.query.ParkingInfoQueryService;
 
 import java.util.List;

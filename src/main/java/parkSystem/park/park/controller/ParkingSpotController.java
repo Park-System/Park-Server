@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import parkSystem.park.park.dto.response.ParkingSpotResDTO;
+import parkSystem.park.park.controller.dto.response.ParkingSpotResDTO;
 import parkSystem.park.park.service.facade.ParkingSpotFacade;
 
 import java.util.List;

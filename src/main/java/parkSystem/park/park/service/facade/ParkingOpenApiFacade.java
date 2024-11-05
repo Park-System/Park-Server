@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
-import parkSystem.park.park.dto.response.ParkingInfoApiResDTO;
+import parkSystem.park.park.controller.dto.response.ParkingInfoApiResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
 import parkSystem.park.park.repository.ParkingSpotRepository;
 

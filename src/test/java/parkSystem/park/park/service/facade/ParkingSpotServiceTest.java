@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.park.domain.enums.ParkingType;
-import parkSystem.park.park.dto.response.ParkingSpotResDTO;
+import parkSystem.park.park.controller.dto.response.ParkingSpotResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
 import parkSystem.park.park.repository.ParkingSpotRepository;
 

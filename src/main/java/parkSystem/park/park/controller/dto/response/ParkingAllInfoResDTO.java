@@ -1,6 +1,5 @@
-package parkSystem.park.park.dto.response;
+package parkSystem.park.park.controller.dto.response;
 
-import lombok.Getter;
 import parkSystem.park.park.domain.ParkingInfo;
 
 

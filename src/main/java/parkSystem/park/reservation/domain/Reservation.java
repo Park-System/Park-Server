@@ -35,10 +35,15 @@ public class Reservation {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot, Payment payment) {
+    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot) {
         this.status = status;
         this.car = car;
         this.parkingSpot = parkingSpot;
-        this.payment = payment;
+    }
+
+    public static Reservation createReservation(Cars car, ParkingSpot parkingSpot){
+        parkingSpot.getParkingInfo().decreaseParkingAmount(); // 예약 시에 주차 자리 감소;
+
+        return new Reservation(ReservationStatus.WAIT, car, parkingSpot);
     }
 }
