@@ -1,16 +1,16 @@
-package parkSystem.park.park.service.Facade;
+package parkSystem.park.park.service.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
-import parkSystem.park.park.service.ParkingInfo.ParkingInfoQueryService;
+import parkSystem.park.park.service.query.ParkingInfoQueryService;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ParkingInfoService {
+public class ParkingInfoFacade {
 
     private final ParkingInfoQueryService parkingInfoQueryService;
 

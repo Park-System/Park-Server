@@ -1,4 +1,4 @@
-package parkSystem.park.park.service.ParkingInfo;
+package parkSystem.park.park.service.query;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

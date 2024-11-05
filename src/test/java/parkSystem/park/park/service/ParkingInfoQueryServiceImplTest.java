@@ -10,7 +10,7 @@ import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
 import parkSystem.park.park.repository.ParkingInfoRepository;
-import parkSystem.park.park.service.ParkingInfo.ParkingInfoQueryService;
+import parkSystem.park.park.service.query.ParkingInfoQueryService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package parkSystem.park.park.service.ParkingSpot;
+package parkSystem.park.park.service.query;
 
 
 import lombok.RequiredArgsConstructor;

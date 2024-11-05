@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.park.dto.response.ParkingAllInfoResDTO;
 import parkSystem.park.park.dto.response.ParkingInfoResDTO;
-import parkSystem.park.park.service.Facade.ParkingInfoService;
+import parkSystem.park.park.service.facade.ParkingInfoFacade;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/parking")
 public class ParkingInfoController {
 
-    private final ParkingInfoService parkingService;
+    private final ParkingInfoFacade parkingService;
 
 
     @GetMapping

@@ -1,4 +1,4 @@
-package parkSystem.park.park.service;
+package parkSystem.park.park.service.facade;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -31,7 +31,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class ParkingOpenApiService  {
+public class ParkingOpenApiFacade {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ParkingInfoRepository parkInfoRepository;
