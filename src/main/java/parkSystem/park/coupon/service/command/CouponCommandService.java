@@ -1,4 +1,4 @@
-package parkSystem.park.coupon.service;
+package parkSystem.park.coupon.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import parkSystem.park.coupon.repository.CouponRepository;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class CouponService {
+public class CouponCommandService {
 
     private final CouponRepository couponRepository;
     public Coupon createCoupon(CouponReqDTO couponReqDTO){

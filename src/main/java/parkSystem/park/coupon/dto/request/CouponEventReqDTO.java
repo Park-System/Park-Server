@@ -14,6 +14,6 @@ public record CouponEventReqDTO(
 
          LocalDateTime end_date,
 
-         Coupon coupon) {
+         long coupon_id) {
 
 }

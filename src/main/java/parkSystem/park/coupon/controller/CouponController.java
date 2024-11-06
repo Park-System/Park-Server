@@ -3,12 +3,16 @@ package parkSystem.park.coupon.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
-import parkSystem.park.coupon.service.CouponService;
+import parkSystem.park.coupon.dto.response.CouponListResDTO;
+import parkSystem.park.coupon.service.facade.CouponService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +26,12 @@ public class CouponController {
         couponService.createCoupon(couponReqDTO);
         CommonResponse commonResponse = new CommonResponse("200 OK", "쿠폰이 등록되었습니다.");
         return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/coupon/list")
+    public ResponseEntity<List<CouponListResDTO>> couponList(){
+
+        List<CouponListResDTO> allCoupons = couponService.findAllCoupons();
+        return new ResponseEntity<>(allCoupons, HttpStatus.OK);
     }
 }
