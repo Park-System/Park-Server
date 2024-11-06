@@ -12,7 +12,7 @@ import parkSystem.park.coupon.repository.CouponRepository;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class CouponService {
+public class CouponCommandService {
 
     private final CouponRepository couponRepository;
     public Coupon createCoupon(CouponReqDTO couponReqDTO){

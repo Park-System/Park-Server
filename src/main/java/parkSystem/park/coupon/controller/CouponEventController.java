@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.dto.response.CouponEventListResDTO;
-import parkSystem.park.coupon.service.couponEvent.CouponEventQueryService;
-import parkSystem.park.coupon.service.couponEvent.CouponEventService;
+import parkSystem.park.coupon.service.facade.CouponEventService;
 
 import java.util.List;
 
@@ -18,7 +17,6 @@ import java.util.List;
 public class CouponEventController {
 
     private final CouponEventService couponEventService;
-    private final CouponEventQueryService couponEventQueryService;
 
     @PostMapping("/register")
     public ResponseEntity<CommonResponse> createCouponEvent(@RequestBody CouponEventReqDTO couponEventReqDTO){
@@ -31,7 +29,7 @@ public class CouponEventController {
     @GetMapping("/list")
     public ResponseEntity<List<CouponEventListResDTO>> couponEventList(){
 
-        List<CouponEventListResDTO> allEvents = couponEventQueryService.findAllEvents();
+        List<CouponEventListResDTO> allEvents = couponEventService.findAllEvents();
         return new ResponseEntity<>(allEvents, HttpStatus.OK);
     }
 }

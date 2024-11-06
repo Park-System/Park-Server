@@ -10,21 +10,21 @@ import parkSystem.park.coupon.domain.CouponEvent;
 import parkSystem.park.coupon.domain.enums.EventStatus;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
-import parkSystem.park.coupon.service.coupon.CouponService;
-import parkSystem.park.coupon.service.couponEvent.CouponEventService;
+import parkSystem.park.coupon.service.coupon.CouponCommandService;
+import parkSystem.park.coupon.service.couponEvent.CouponEventCommandService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @SpringBootTest
 @Transactional
-class CouponEventServiceTest {
+class CouponEventCommandServiceTest {
 
     @Autowired
-    CouponEventService couponEventService;
+    CouponEventCommandService couponEventCommandService;
 
     @Autowired
-    CouponService couponService;
+    CouponCommandService couponCommandService;
 
     @Test
     void createEvent() {
@@ -39,7 +39,7 @@ class CouponEventServiceTest {
                 .count(30)
                 .build();*/
         CouponReqDTO couponReqDTO = new CouponReqDTO("테스트쿠폰", "2024-10-30", "2099-12-31", 30, 50);
-        Coupon newCoupon = couponService.createCoupon(couponReqDTO);
+        Coupon newCoupon = couponCommandService.createCoupon(couponReqDTO);
 
         // 문자열
         String start = "2024-10-30";
@@ -52,7 +52,7 @@ class CouponEventServiceTest {
         CouponEventReqDTO couponEventReqDTO = new CouponEventReqDTO("테스트 이벤트", "주차장 선착순 쿠폰 이벤트", start_date, end_date, newCoupon.getId());
 
         //when
-        CouponEvent event = couponEventService.createEvent(couponEventReqDTO);
+        CouponEvent event = couponEventCommandService.createEvent(couponEventReqDTO);
 
         //then
         Assertions.assertThat(event.getCoupon().getCouponName()).isEqualTo("테스트쿠폰");

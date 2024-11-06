@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class CouponEventService {
+public class CouponEventCommandService {
 
     private final CouponEventRepository couponEventRepository;
     private final CouponRepository couponRepository;

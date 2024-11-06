@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
 import parkSystem.park.coupon.dto.response.CouponListResDTO;
-import parkSystem.park.coupon.service.coupon.CouponQueryService;
-import parkSystem.park.coupon.service.coupon.CouponService;
+import parkSystem.park.coupon.service.facade.CouponService;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import java.util.List;
 public class CouponController {
 
     private final CouponService couponService;
-    private final CouponQueryService couponQueryService;
 
     @PostMapping("/coupon/register")
     public ResponseEntity<CommonResponse> createCoupon(@RequestBody CouponReqDTO couponReqDTO){
@@ -33,7 +31,7 @@ public class CouponController {
     @GetMapping("/coupon/list")
     public ResponseEntity<List<CouponListResDTO>> couponList(){
 
-        List<CouponListResDTO> allCoupons = couponQueryService.findAllCoupons();
+        List<CouponListResDTO> allCoupons = couponService.findAllCoupons();
         return new ResponseEntity<>(allCoupons, HttpStatus.OK);
     }
 }
