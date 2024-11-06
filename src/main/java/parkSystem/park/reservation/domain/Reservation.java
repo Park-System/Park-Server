@@ -46,4 +46,12 @@ public class Reservation {
 
         return new Reservation(ReservationStatus.WAIT, car, parkingSpot);
     }
+
+    public void successDeposit(){
+        this.status = ReservationStatus.COMPLETE;
+    }
+
+    public void failDeposit(){
+        this.status = ReservationStatus.FAIL;
+    }
 }
