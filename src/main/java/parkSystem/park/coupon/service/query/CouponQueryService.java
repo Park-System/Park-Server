@@ -1,4 +1,4 @@
-package parkSystem.park.coupon.service.coupon;
+package parkSystem.park.coupon.service.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

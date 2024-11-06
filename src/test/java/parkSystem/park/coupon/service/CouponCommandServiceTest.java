@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.coupon.domain.Coupon;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
-import parkSystem.park.coupon.service.coupon.CouponCommandService;
+import parkSystem.park.coupon.service.command.CouponCommandService;
 
 @SpringBootTest
 @Transactional

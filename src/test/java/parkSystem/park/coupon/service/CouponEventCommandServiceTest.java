@@ -10,8 +10,8 @@ import parkSystem.park.coupon.domain.CouponEvent;
 import parkSystem.park.coupon.domain.enums.EventStatus;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.dto.request.CouponReqDTO;
-import parkSystem.park.coupon.service.coupon.CouponCommandService;
-import parkSystem.park.coupon.service.couponEvent.CouponEventCommandService;
+import parkSystem.park.coupon.service.command.CouponCommandService;
+import parkSystem.park.coupon.service.command.CouponEventCommandService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

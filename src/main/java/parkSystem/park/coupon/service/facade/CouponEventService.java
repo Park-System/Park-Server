@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import parkSystem.park.coupon.domain.CouponEvent;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.dto.response.CouponEventListResDTO;
-import parkSystem.park.coupon.service.couponEvent.CouponEventCommandService;
-import parkSystem.park.coupon.service.couponEvent.CouponEventQueryService;
+import parkSystem.park.coupon.service.command.CouponEventCommandService;
+import parkSystem.park.coupon.service.query.CouponEventQueryService;
 
 import java.util.List;
 
