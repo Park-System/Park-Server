@@ -5,14 +5,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.car.domain.Cars;
+import parkSystem.park.common.baseEntity.BaseEntity;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.payment.domain.Payment;
 import parkSystem.park.reservation.domain.enums.ReservationStatus;
 
+import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Reservation {
+public class Reservation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,13 @@ public class Reservation {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
+    private LocalDateTime limitDepositTime;
+
     public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot) {
         this.status = status;
         this.car = car;
         this.parkingSpot = parkingSpot;
+        countDown();
     }
 
     public static Reservation createReservation(Cars car, ParkingSpot parkingSpot){
@@ -53,5 +59,9 @@ public class Reservation {
 
     public void failDeposit(){
         this.status = ReservationStatus.FAIL;
+    }
+
+    public void countDown(){
+        limitDepositTime = this.getCreatedDate().plusMinutes(30);
     }
 }

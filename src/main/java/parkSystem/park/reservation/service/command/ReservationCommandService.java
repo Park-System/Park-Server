@@ -2,7 +2,6 @@ package parkSystem.park.reservation.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
@@ -10,8 +9,8 @@ import parkSystem.park.car.service.query.CarQueryService;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
+import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
-import parkSystem.park.reservation.event.DepositEvent;
 import parkSystem.park.reservation.repository.ReservationRepository;
 
 @Service
@@ -26,7 +25,7 @@ public class ReservationCommandService {
 
     private final CarQueryService carQueryService;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
+
 
     /**
      *
@@ -35,7 +34,7 @@ public class ReservationCommandService {
      * @param
      */
 
-    public void reservation(ReservationReqDTO reservationReqDTO){
+    public ReservationResDTO reservation(ReservationReqDTO reservationReqDTO){
 
         Cars findCars = carQueryService.findByCarId(reservationReqDTO.carsId()); //보유 차량 찾아옴
 
@@ -43,11 +42,9 @@ public class ReservationCommandService {
 
         Reservation reservation = Reservation.createReservation(findCars, findParking); //예약 대기 상태인 reservation 생성
 
+        Reservation saveReservation = reservationRepository.save(reservation);
 
-        reservationRepository.save(reservation);
-
-        applicationEventPublisher.publishEvent(new DepositEvent(reservation.getId(), reservationReqDTO.importId()));
-
+        return ReservationResDTO.toDTO(saveReservation);
     }
 
 
