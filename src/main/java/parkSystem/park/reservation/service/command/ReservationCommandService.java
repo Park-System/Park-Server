@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
 import parkSystem.park.car.service.query.CarQueryService;
+import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
+import parkSystem.park.park.service.command.ParkingInfoCommandService;
 import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
 import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
 import parkSystem.park.reservation.repository.ReservationRepository;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,8 +27,9 @@ public class ReservationCommandService {
 
     private final ParkingSpotQueryService parkingSpotQueryService;
 
-    private final CarQueryService carQueryService;
+    private final ParkingInfoCommandService parkingInfoCommandService;
 
+    private final CarQueryService carQueryService;
 
 
     /**
@@ -40,12 +45,16 @@ public class ReservationCommandService {
 
         ParkingSpot findParking = parkingSpotQueryService.findParkingSpotById(reservationReqDTO.parkingSpotId()); // 주차자리 찾아옴
 
-        Reservation reservation = Reservation.createReservation(findCars, findParking); //예약 대기 상태인 reservation 생성
+        ParkingInfo parkingInfo = parkingInfoCommandService.getParkingInfo(reservationReqDTO.parkingInfoId());
+
+
+        Reservation reservation = Reservation.createReservation(findCars, findParking, parkingInfo); //예약 대기 상태인 reservation 생성
 
         Reservation saveReservation = reservationRepository.save(reservation);
 
         return ReservationResDTO.toDTO(saveReservation);
     }
+
 
 
 

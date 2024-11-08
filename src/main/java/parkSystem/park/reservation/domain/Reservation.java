@@ -1,11 +1,13 @@
 package parkSystem.park.reservation.domain;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.car.domain.Cars;
 import parkSystem.park.common.baseEntity.BaseEntity;
+import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.payment.domain.Payment;
 import parkSystem.park.reservation.domain.enums.ReservationStatus;
@@ -38,19 +40,29 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parking_info_id")
+    private ParkingInfo parkingInfo;
+
     private LocalDateTime limitDepositTime;
 
-    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot) {
+    @PostConstruct
+    public void initializeLimitDepositTime() {
+        this.countDown();
+    }
+
+    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot, ParkingInfo parkingInfo) {
         this.status = status;
         this.car = car;
         this.parkingSpot = parkingSpot;
-        countDown();
+        this.parkingInfo = parkingInfo;
     }
 
-    public static Reservation createReservation(Cars car, ParkingSpot parkingSpot){
-        parkingSpot.getParkingInfo().decreaseParkingAmount(); // 예약 시에 주차 자리 감소;
+    public static Reservation createReservation(Cars car, ParkingSpot parkingSpot, ParkingInfo parkingInfo){
+        parkingSpot.reservationSpot();
+        parkingInfo.decreaseParkingAmount(); // 예약 시에 주차 자리 감소;
 
-        return new Reservation(ReservationStatus.WAIT, car, parkingSpot);
+        return new Reservation(ReservationStatus.WAIT, car, parkingSpot, parkingInfo);
     }
 
     public void successDeposit(){

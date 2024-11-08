@@ -57,7 +57,7 @@ public class ParkingInfo {
     }
 
     public void decreaseParkingAmount() {
-        int result = parkingAmount--;
+        int result = --parkingAmount;
         if(result < 0) {
             throw new IllegalArgumentException(PARKING_AMOUNT_EXCEPTION);
         }

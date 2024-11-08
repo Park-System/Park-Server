@@ -6,6 +6,8 @@ public record ReservationReqDTO(
         @NotNull(message = "null안됨")
         Long carsId,
         @NotNull(message = "null")
-        Long parkingSpotId
+        Long parkingSpotId,
+
+        Long parkingInfoId
 ) {
 }

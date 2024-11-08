@@ -13,3 +13,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+imp:
+  code: imp34307077
+  api:
+    key: 1284273145317545
+    secretKey: vpoTXNZU3NKYKEy14dF4soS9Dv5oOVusCkNeMXXC2nlio2UHC0UuTt4b826AetbleecMkqCNJENImZEq

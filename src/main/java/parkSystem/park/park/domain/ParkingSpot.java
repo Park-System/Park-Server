@@ -27,8 +27,10 @@ public class ParkingSpot {
     @JoinColumn(name = "parking_info_id")
     private ParkingInfo parkingInfo;
 
+
+
     //주차 가능 여부
-    private Boolean spotAvailable;
+    private boolean spotAvailable;
 
 
     @Builder
@@ -36,5 +38,13 @@ public class ParkingSpot {
         this.parkingType = parkingType;
         this.parkingSpotName = parkingSpotName;
         this.parkingInfo = parkingInfo;
+    }
+
+    public void reservationSpot(){
+        this.spotAvailable = false;
+    }
+
+    public void unReservationSpot(){
+        this.spotAvailable = true;
     }
 }
