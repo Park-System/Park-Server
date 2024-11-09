@@ -13,7 +13,7 @@ import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.park.dto.response.ParkInfoApiResDTO;
 import parkSystem.park.park.repository.ParkInfoRepository;
-import parkSystem.park.park.repository.ParkSpotRepository;
+import parkSystem.park.park.repository.ParkingSpotRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class ParkOpenApiServiceImpl implements ParkOpenApiService{
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ParkInfoRepository parkInfoRepository;
-    private final ParkSpotRepository parkSpotRepository;
+    private final ParkingSpotRepository parkSpotRepository;
     private final JdbcTemplate jdbcTemplate;
 
     String apiUrl = "http://apis.data.go.kr/6260000/BusanPblcPrkngInfoService/getPblcPrkngInfo";
