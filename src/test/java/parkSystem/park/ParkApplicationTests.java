@@ -5,11 +5,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-class ParkApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-
-}
+class ParkApplicationTests {}
