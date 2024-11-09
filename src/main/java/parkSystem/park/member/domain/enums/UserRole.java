@@ -1,5 +1,6 @@
 package parkSystem.park.member.domain.enums;
 
 public enum UserRole {
-    EXAMPLE
+  USER,
+  ADMIN,
 }
