@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Long> {
 
-  @Query("select ps from ParkingSpot  ps where ps.parkingInfo.id = :parkingInfoId")
-  Optional<List<ParkingSpot>> findByParkingInfoId(Long parkingInfoId);
+    @Query("select ps from ParkingSpot  ps where ps.parkingInfo.id = :parkingInfoId")
+    Optional<List<ParkingSpot>> findByParkingInfoId(Long parkingInfoId);
 }
