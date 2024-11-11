@@ -2,6 +2,7 @@ package parkSystem.park.reservation.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
@@ -13,9 +14,8 @@ import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
 import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
+import parkSystem.park.reservation.event.CancelEvent;
 import parkSystem.park.reservation.repository.ReservationRepository;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -31,6 +31,8 @@ public class ReservationCommandService {
 
     private final CarQueryService carQueryService;
 
+    private final ApplicationEventPublisher publisher;
+
 
     /**
      *
@@ -41,6 +43,8 @@ public class ReservationCommandService {
 
     public ReservationResDTO reservation(ReservationReqDTO reservationReqDTO){
 
+        log.info("---------------------------");
+
         Cars findCars = carQueryService.findByCarId(reservationReqDTO.carsId()); //보유 차량 찾아옴
 
         ParkingSpot findParking = parkingSpotQueryService.findParkingSpotById(reservationReqDTO.parkingSpotId()); // 주차자리 찾아옴
@@ -50,18 +54,17 @@ public class ReservationCommandService {
 
         Reservation reservation = Reservation.createReservation(findCars, findParking, parkingInfo); //예약 대기 상태인 reservation 생성
 
+
+        //여기서 저장하는데
         Reservation saveReservation = reservationRepository.save(reservation);
+
+
+        publisher.publishEvent(new CancelEvent(saveReservation));
+
+        // 비동기 여도 여기 아이디는 이미 null 임
 
         return ReservationResDTO.toDTO(saveReservation);
     }
-
-
-
-
-
-
-
-
 
 
 

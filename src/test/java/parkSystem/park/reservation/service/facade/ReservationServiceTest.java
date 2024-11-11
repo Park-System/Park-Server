@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
 import parkSystem.park.car.domain.enums.CarType;
@@ -24,6 +25,7 @@ import parkSystem.park.reservation.domain.enums.ReservationStatus;
 import parkSystem.park.reservation.repository.ReservationRepository;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 @SpringBootTest
@@ -180,6 +182,30 @@ class ReservationServiceTest {
     }
 
 
+    @Test
+    @DisplayName("스케줄러를 사용하여 예약 후 3초후에 예약 실패 상태 변경 예약 실패 상태 변경 후 예약 실패 상태 롤백 테스트")
+    @Rollback(value = false)
+    public void 예약_실패_스케줄러_테스트() throws Exception {
+       //given
+
+        ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
+
+        ReservationResDTO saveReservation = reservationService.reservation(reservationReqDTO);
+
+
+        // then: 비동기 이벤트가 발생하고 상태가 FAIL로 변경되었는지 확인
+        Thread.sleep(6000); // 3초 후 비동기 작업이 완료되도록 기다림
+
+        Reservation reservation = reservationRepository.findById(saveReservation.reservationId()).get();
+
+        //then
+        Assertions.assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.FAIL);
+
+
+        // 이벤트가 완료되었음을 확인
+
+
+    }
 
 
 }

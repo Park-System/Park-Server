@@ -3,6 +3,7 @@ package parkSystem.park.reservation.service.schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.park.service.command.ParkingInfoCommandService;
 import parkSystem.park.park.service.command.ParkingSpotCommandService;
 import parkSystem.park.reservation.domain.Reservation;
@@ -26,7 +27,8 @@ public class ReservationTimeHandler {
      * 1분 마다 결제 실패 로직을 체크후에  결제 실패상태이면 해당 에약 상태를 즉 예약 자리와 예약 상태를 롤백
      */
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 6000)
+    @Transactional
     public void rollBackReservation(){
 
         List<Reservation> reservationList = reservationRepository.findByStatus(ReservationStatus.FAIL);
