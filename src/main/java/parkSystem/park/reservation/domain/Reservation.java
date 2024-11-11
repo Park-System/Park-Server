@@ -1,6 +1,5 @@
 package parkSystem.park.reservation.domain;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,7 +45,7 @@ public class Reservation extends BaseEntity {
 
     private LocalDateTime limitDepositTime;
 
-    @PostConstruct
+    @PrePersist
     public void initializeLimitDepositTime() {
         this.countDown();
     }

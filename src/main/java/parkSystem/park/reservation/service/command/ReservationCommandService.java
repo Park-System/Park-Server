@@ -2,7 +2,6 @@ package parkSystem.park.reservation.service.command;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
@@ -14,8 +13,10 @@ import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
 import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
-import parkSystem.park.reservation.event.CancelEvent;
 import parkSystem.park.reservation.repository.ReservationRepository;
+import parkSystem.park.reservation.service.query.ReservationQueryService;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,7 +32,7 @@ public class ReservationCommandService {
 
     private final CarQueryService carQueryService;
 
-    private final ApplicationEventPublisher publisher;
+    private final ReservationQueryService reservationQueryService;
 
 
     /**
@@ -42,8 +43,6 @@ public class ReservationCommandService {
      */
 
     public ReservationResDTO reservation(ReservationReqDTO reservationReqDTO){
-
-        log.info("---------------------------");
 
         Cars findCars = carQueryService.findByCarId(reservationReqDTO.carsId()); //보유 차량 찾아옴
 
@@ -56,14 +55,21 @@ public class ReservationCommandService {
 
 
         //여기서 저장하는데
-        Reservation saveReservation = reservationRepository.save(reservation);
-
-
-        publisher.publishEvent(new CancelEvent(saveReservation));
+        Reservation saveReservation = reservationRepository.saveAndFlush(reservation);
 
         // 비동기 여도 여기 아이디는 이미 null 임
 
         return ReservationResDTO.toDTO(saveReservation);
+    }
+
+
+    public void cancelReservation(Long reservationId){
+
+        log.info("예약 아이디 ={}", reservationId);
+
+        Reservation findByReservation = reservationQueryService.findReservationById(reservationId);
+
+        findByReservation.failDeposit();
     }
 
 
