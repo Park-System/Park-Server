@@ -33,9 +33,4 @@ public class MemberController {
     Member member = memberService.registerMember(memberDTO);
     return ResponseEntity.ok(member.getUsername() + " 회원가입이 완료되었습니다.");
   }
-
-  @PostMapping("/auth_test")
-  public ResponseEntity<String> authTest() {
-    return ResponseEntity.ok("success");
-  }
 }
