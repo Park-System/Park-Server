@@ -47,4 +47,8 @@ public class Coupon {
         this.total_count = total_count;
         this.count = count;
     }
+
+    public void updateCount(int count){
+        this.count=count;
+    }
 }
