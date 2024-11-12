@@ -31,11 +31,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @ColumnDefault("GENERAL")
     @Enumerated(EnumType.STRING)
     private UserType type;
 
-    public Member(String password, String email, String username, String nice_name, UserRole role, @Nullable UserType type) {
+    public Member(String password, String email, String username, String nice_name, UserRole role, UserType type) {
         this.password = password;
         this.email = email;
         this.username = username;

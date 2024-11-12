@@ -9,9 +9,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import parkSystem.park.member.service.facade.CustomUserDetailsService;
 
 import javax.crypto.SecretKey;
 import java.util.*;
@@ -25,13 +25,15 @@ public class JwtTokenProvider {
   public static final String AUTHORIZATION_KEY = "auth";
 
   private final SecretKey key;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtTokenProvider(@Value("83ce59d0cd5846bf02d9bf465e66fe3cd777cd51337d84d696b3632f8ab4cb63") String secretKey) {
+  public JwtTokenProvider(@Value("83ce59d0cd5846bf02d9bf465e66fe3cd777cd51337d84d696b3632f8ab4cb63") String secretKey, CustomUserDetailsService customUserDetailsService) {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     this.key = Keys.hmacShaKeyFor(keyBytes);
+    this.customUserDetailsService = customUserDetailsService;
   }
 
-  public JwtToken generateToken(Authentication authentication) {
+  public JwtToken generateToken(Authentication authentication, String username) {
     // 권한 불러오기
     String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
@@ -43,6 +45,7 @@ public class JwtTokenProvider {
     Date accessTokenExpirationTime = new Date(now + 1000 * 60 * 10);  // access token 유효 시간, 10분
     String accessToken = Jwts.builder()
             .subject(authentication.getName())
+            .claim("username", username)
             .claim(AUTHORIZATION_KEY, authorities)
             .expiration(accessTokenExpirationTime)
             .signWith(key)
@@ -51,6 +54,7 @@ public class JwtTokenProvider {
     // generate refreshToken
     Date refreshTokenExpirationTime = new Date(now + 1000 * 60 * 30);  // refresh token 유효 시간, 30분
     String refreshToken = Jwts.builder()
+            .claim("username", username)
             .expiration(refreshTokenExpirationTime)
             .signWith(key)
             .compact();
@@ -73,7 +77,8 @@ public class JwtTokenProvider {
             .map(SimpleGrantedAuthority::new)
             .toList();
 
-    UserDetails principal = new User(claims.getSubject(), "", authorities);
+    String username = claims.get("username").toString();
+    UserDetails principal = customUserDetailsService.loadUserByUsername(username);
     return new UsernamePasswordAuthenticationToken(principal, "", authorities);
   }
 

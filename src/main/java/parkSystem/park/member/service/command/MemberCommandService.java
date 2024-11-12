@@ -37,7 +37,7 @@ public class MemberCommandService {
     Authentication authentication =
             authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-    return jwtTokenProvider.generateToken(authentication);
+    return jwtTokenProvider.generateToken(authentication, username);
   }
 
   @Transactional
