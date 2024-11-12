@@ -31,6 +31,7 @@ public class MemberCouponCommandService {
     private final MemberCouponRepository memberCouponRepository;
 
     public MemberCoupon createCouponEventPublish(CouponEventPublishReqDTO couponEventPublishReqDTO){
+
         log.info("쿠폰 발행 접근!");
         String username = couponEventPublishReqDTO.username();
         Long eventId = couponEventPublishReqDTO.eventId();
@@ -40,17 +41,10 @@ public class MemberCouponCommandService {
         //LockMode Coupon 쿼리
         Coupon coupon = couponRepository.findByIdForUpdate(couponEvent.getCoupon().getId());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        LocalDateTime startDate = LocalDateTime.parse(coupon.getStartDate(), formatter);
-        LocalDateTime endDate = LocalDateTime.parse(coupon.getEndDate(), formatter);
-        LocalDateTime now = LocalDateTime.now();
-        CouponStatus couponStatus;
+        //쿠폰 활성화 여부 체크 메서드
+        CouponStatus couponStatus = getCouponStatus(coupon);
 
-        // 쿠폰 시작, 종료일과 현재일을 비교하여 이벤트의 상태 여부 결정
-        if((now.isEqual(startDate) || now.isAfter(startDate)) && (now.isEqual(endDate) || now.isBefore(endDate))){
-            couponStatus=CouponStatus.ON;
-        }else couponStatus=CouponStatus.OFF;
-
+        //쿠폰이 0개 미만일 시, 오류 발생 및 예외 처리 진행
         if(coupon.getCount()-1<0){
             throw new CouponEmptyException("쿠폰이 모두 소진되었습니다.");
         }
@@ -65,5 +59,21 @@ public class MemberCouponCommandService {
         coupon.updateCount(coupon.getCount()-1);
 
         return memberCouponRepository.save(memberCoupon);
+    }
+
+    private CouponStatus getCouponStatus(Coupon coupon) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime startDate = LocalDateTime.parse(coupon.getStartDate(), formatter);
+        LocalDateTime endDate = LocalDateTime.parse(coupon.getEndDate(), formatter);
+        LocalDateTime now = LocalDateTime.now();
+        CouponStatus couponStatus;
+
+        // 쿠폰 시작, 종료일과 현재일을 비교하여 이벤트의 상태 여부 결정
+        if((now.isEqual(startDate) || now.isAfter(startDate)) && (now.isEqual(endDate) || now.isBefore(endDate))){
+            couponStatus=CouponStatus.ON;
+        }else couponStatus=CouponStatus.OFF;
+
+        return couponStatus;
     }
 }

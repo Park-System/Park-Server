@@ -45,6 +45,7 @@ class MemberCouponCommandServiceTest {
 
     @BeforeEach
     public void setUp() throws InterruptedException {
+        //given
         Coupon coupon = Coupon.builder()
                 .count(50)
                 .couponName("test")
@@ -88,6 +89,7 @@ class MemberCouponCommandServiceTest {
 
     @Test
     void createCouponEventPublish() {
+        //when
         for(int i=1; i<=50; i++){
             CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+i, 1L);
             memberCouponCommandService.createCouponEventPublish(couponEventPublishReqDTO);
@@ -95,13 +97,14 @@ class MemberCouponCommandServiceTest {
             System.out.println(coupon.getCount());
         }
 
+        //then
         Coupon coupon = couponRepository.findById(1L).get();
         Assertions.assertThat(coupon.getCount()).isEqualTo(0);
     }
 
     @Test
     void createCouponEventPublish2() throws InterruptedException {
-
+        //when
         ExecutorService executorsService = Executors.newFixedThreadPool(100);
         CountDownLatch latch = new CountDownLatch(100);
 
@@ -120,6 +123,8 @@ class MemberCouponCommandServiceTest {
         }
 
         latch.await();
+
+        //then
         Coupon coupon = couponRepository.findById(1L).get();
         Assertions.assertThat(coupon.getCount()).isEqualTo(0);
     }
