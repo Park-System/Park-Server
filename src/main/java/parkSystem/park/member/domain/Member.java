@@ -3,6 +3,7 @@ package parkSystem.park.member.domain;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.domain.enums.UserType;
 
@@ -30,7 +31,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Nullable  // 특수한 상태를 가지지 않는 일반 회원 또는 관리자의 경우 null 값을 가짐
+    @ColumnDefault("GENERAL")
     @Enumerated(EnumType.STRING)
     private UserType type;
 
