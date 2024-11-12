@@ -27,7 +27,7 @@ public class JwtTokenProvider {
   private final SecretKey key;
   private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtTokenProvider(@Value("83ce59d0cd5846bf02d9bf465e66fe3cd777cd51337d84d696b3632f8ab4cb63") String secretKey, CustomUserDetailsService customUserDetailsService) {
+  public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, CustomUserDetailsService customUserDetailsService) {
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     this.key = Keys.hmacShaKeyFor(keyBytes);
     this.customUserDetailsService = customUserDetailsService;
