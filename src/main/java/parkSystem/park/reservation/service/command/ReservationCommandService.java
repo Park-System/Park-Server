@@ -55,9 +55,8 @@ public class ReservationCommandService {
 
 
         //여기서 저장하는데
-        Reservation saveReservation = reservationRepository.saveAndFlush(reservation);
+        Reservation saveReservation = reservationRepository.save(reservation);
 
-        // 비동기 여도 여기 아이디는 이미 null 임
 
         return ReservationResDTO.toDTO(saveReservation);
     }
@@ -70,6 +69,11 @@ public class ReservationCommandService {
         Reservation findByReservation = reservationQueryService.findReservationById(reservationId);
 
         findByReservation.failDeposit();
+    }
+
+
+    public void cancelBulkReservation(List<Long> reservationIds){
+        reservationRepository.updateStatus(reservationIds);
     }
 
 

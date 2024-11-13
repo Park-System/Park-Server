@@ -13,6 +13,8 @@ import parkSystem.park.reservation.domain.enums.ReservationStatus;
 
 import java.time.LocalDateTime;
 
+import static parkSystem.park.reservation.ReservationConst.DURATION_TIME;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -73,6 +75,6 @@ public class Reservation extends BaseEntity {
     }
 
     public void countDown(){
-        limitDepositTime = this.getCreatedDate().plusMinutes(30);
+        limitDepositTime = this.getCreatedDate().plusSeconds(DURATION_TIME);
     }
 }

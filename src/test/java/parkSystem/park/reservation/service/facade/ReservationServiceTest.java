@@ -23,6 +23,8 @@ import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
 import parkSystem.park.reservation.domain.enums.ReservationStatus;
 import parkSystem.park.reservation.repository.ReservationRepository;
+import parkSystem.park.reservation.service.command.ReservationCommandService;
+import parkSystem.park.reservation.service.query.ReservationQueryService;
 
 import java.util.List;
 
@@ -42,6 +44,12 @@ class ReservationServiceTest {
     @Autowired
     private ParkingInfoCommandService parkingInfoCommandService;
 
+    @Autowired
+    private ReservationQueryService reservationQueryService;
+
+    @Autowired
+    private ReservationCommandService reservationCommandService;
+
 
     @Autowired
      private CarRepository carRepository;
@@ -58,6 +66,7 @@ class ReservationServiceTest {
     ParkingSpot parkingSpot;
 
     ParkingInfo parkingInfo;
+
 
 
 
@@ -101,9 +110,6 @@ class ReservationServiceTest {
         parkingInfoRepository.deleteAll();
 
         carRepository.deleteAll();
-
-
-
 
     }
 
@@ -202,28 +208,91 @@ class ReservationServiceTest {
      * 해당 테스트 코드는 주석처리 할려면 ttl 시간을 조정해야하기 때문에 주석처리해놈
      */
 
-//
-//    @Test
-//    @DisplayName("스케줄러를 사용하여 예약 후 3초후에 예약 실패 상태 변경 예약 실패 상태 변경 후 예약 실패 상태 롤백 테스트")
-//    public void 예약_실패_스케줄러_테스트() throws Exception {
-//       //given
-//
-//        ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
-//
-//        ReservationResDTO saveReservation = reservationService.reservation(reservationReqDTO);
-//
-//
-//        // then: 비동기 이벤트가 발생하고 상태가 FAIL로 변경되었는지 확인
-//        Thread.sleep(6000); // 3초 후 비동기 작업이 완료되도록 기다림
-//
-//        Reservation reservation = reservationRepository.findById(saveReservation.reservationId()).get();
-//
-//        //then
-//        Assertions.assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.FAIL);
-//
-//
-//        // 이벤트가 완료되었음을 확인
-//    }
+
+    @Test
+    @DisplayName("예약 후 redis keyNotification을 활용한 6초후에 예약 실패 상태 변경 예약 실패 상태 변경 후 예약 실패 상태 롤백 테스트")
+    public void 예약실패_레디스_테스트() throws Exception {
+       //given
+
+        ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
+
+        ReservationResDTO saveReservation = reservationService.reservation(reservationReqDTO);
+
+
+        // then: 비동기 이벤트가 발생하고 상태가 FAIL로 변경되었는지 확인
+        Thread.sleep(6000); // 3초 후 비동기 작업이 완료되도록 기다림
+
+        Reservation reservation = reservationRepository.findById(saveReservation.reservationId()).get();
+
+        //then
+        Assertions.assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.FAIL);
+
+
+        // 이벤트가 완료되었음을 확인
+    }
+
+
+    @Test
+    @DisplayName("redis가 죽을 가능성을 대비해 스케줄러를 통한 예약 limit 시간 초과하면 실패 상태로 업데이트")
+    public void 레디스_죽을시_스케줄러를_통한_() throws Exception {
+       //given
+        ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
+
+        ReservationResDTO saveReservation = reservationCommandService.reservation(reservationReqDTO); // 해당 예약은 redis를 사용하지 않은 순수 예약
+
+
+       //when
+        Thread.sleep(6000); //현재 만료시간 5초 이므로
+
+        reservationService.bulk_update_CancelStatus();
+
+        Reservation findByReservation = reservationQueryService.findReservationById(saveReservation.reservationId());
+        //then
+        Assertions.assertThat(findByReservation.getStatus()).isEqualTo(ReservationStatus.FAIL);
+
+    }
+
+
+
+    @Test
+    @DisplayName("예약을 실패 할 시에 전체 데이터 RollBack")
+    public void 예약_실패_상태일때_전체데이터_롤백() throws Exception {
+       //given
+
+        ParkingSpot parkingSpot1 = new ParkingSpot(ParkingType.NORMAL, "테스트", parkingInfo);
+
+        parkingSpotRepository.save(parkingSpot1);
+
+        ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
+        ReservationReqDTO reservationReqDTO1 = new ReservationReqDTO(cars.getId(), parkingSpot1.getId(), parkingInfo.getId());
+
+
+        reservationCommandService.reservation(reservationReqDTO);
+        reservationCommandService.reservation(reservationReqDTO1);// 해당 예약은 r
+
+       //when
+        Thread.sleep(6000);
+
+        ParkingSpot parkingSpots = parkingSpotRepository.findById(parkingSpot.getId()).get();
+        ParkingInfo parkingInfos = parkingInfoRepository.findById(parkingInfo.getId()).get();
+
+        System.out.println("parkingSpots.isSpotAvailable() = " + parkingSpots.isSpotAvailable());
+        System.out.println("parkingInfos.getParkingAmount() = " + parkingInfos.getParkingAmount());
+
+
+        reservationService.bulk_update_CancelStatus();
+
+        reservationService.bulk_reservationRollBack();
+
+        ParkingInfo findParkingInfo = parkingInfoRepository.findById(parkingInfo.getId()).get();
+
+        ParkingSpot findParkingSpot = parkingSpotRepository.findById(parkingSpot.getId()).get();
+
+        //then
+        Assertions.assertThat(findParkingSpot.isSpotAvailable()).isEqualTo(true);
+        Assertions.assertThat(findParkingInfo.getParkingAmount()).isEqualTo(100);
+
+    }
 
 
 }

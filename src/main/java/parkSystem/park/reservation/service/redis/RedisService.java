@@ -34,9 +34,12 @@ public class RedisService  {
 
         Duration ttl = Duration.between(LocalDateTime.now(), reservation.getLimitDepositTime());
 
+        Duration testDuration = Duration.ofSeconds(5);// 5초 TTL 설정
+
+
         String redisKey = "reservationId:" + reservationId;
 
-        stringStringValueOperations.set(redisKey, "1", ttl);
+        stringStringValueOperations.set(redisKey, "1", testDuration);
 
         log.info("예약 만료 시간 설정: " + ttl.toMinutes() + "분 후");
 
