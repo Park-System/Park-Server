@@ -1,6 +1,7 @@
 package parkSystem.park.coupon.service.command;
 
 import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,6 +77,7 @@ class MemberCouponCommandServiceTest {
                 .build();
 
         couponEventRepository.save(couponEvent);
+        log.info("쿠폰이벤트 ID : {}",couponEvent.getId());
 
         // 100명 회원 생성
         for (int i = 1; i <= 100; i++) {
@@ -92,23 +94,39 @@ class MemberCouponCommandServiceTest {
 
     @Test
     @DisplayName("선착순 쿠폰 순차 테스트")
+    @Transactional
     void createCouponEventPublish() {
+
+        //given
+        List<CouponEvent> celist = couponEventRepository.findAll();
+        CouponEvent couponEvent = celist.get(celist.size() - 1);
+        List<Coupon> clist = couponRepository.findAll();
+        Coupon testCoupon = clist.get(clist.size() - 1);
+
         //when
         for(int i=1; i<=50; i++){
-            CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+i, 1L);
+            CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+i, couponEvent.getId());
             memberCouponCommandService.createCouponEventPublish(couponEventPublishReqDTO);
-            Coupon coupon = couponRepository.findById(1L).get();
+            Coupon coupon = couponRepository.findById(testCoupon.getId()).get();
             log.info("{}", coupon.getCount());
         }
 
         //then
-        Coupon coupon = couponRepository.findById(1L).get();
+        Coupon coupon = couponRepository.findById(testCoupon.getId()).get();
         Assertions.assertThat(coupon.getCount()).isEqualTo(0);
+
     }
 
     @Test
     @DisplayName("선착순 쿠폰 동시성 테스트")
     void createCouponEventPublish2() throws InterruptedException {
+
+        //given
+        List<CouponEvent> celist = couponEventRepository.findAll();
+        CouponEvent couponEvent = celist.get(celist.size() - 1);
+        List<Coupon> clist = couponRepository.findAll();
+        Coupon testCoupon = clist.get(clist.size() - 1);
+
         //when
         ExecutorService executorsService = Executors.newFixedThreadPool(100);
         CountDownLatch latch = new CountDownLatch(100);
@@ -117,7 +135,7 @@ class MemberCouponCommandServiceTest {
             final int memberId = i;
             executorsService.submit(()->{
                 try {
-                    CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+memberId, 1L);
+                    CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+memberId, couponEvent.getId());
                     memberCouponCommandService.createCouponEventPublish(couponEventPublishReqDTO);
                 }catch (CouponEmptyException e){
                     log.info("쿠폰 소진!!!");
@@ -130,7 +148,7 @@ class MemberCouponCommandServiceTest {
         latch.await();
 
         //then
-        Coupon coupon = couponRepository.findById(1L).get();
+        Coupon coupon = couponRepository.findById(testCoupon.getId()).get();
         Assertions.assertThat(coupon.getCount()).isEqualTo(0);
     }
 }
