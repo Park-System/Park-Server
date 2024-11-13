@@ -18,7 +18,6 @@ public class MemberController {
 
   private final MemberService memberService;
 
-  @Transactional(readOnly = true)
   @PostMapping("/login")
   public JwtToken logIn(@RequestBody LogInDTO logInDTO) {
     JwtToken jwtToken = memberService.logIn(logInDTO);

@@ -20,12 +20,10 @@ public class MemberService {
   // private final MemberQueryService memberQueryService;
   private final MemberCommandService memberCommandService;
 
-  @Transactional
   public JwtToken logIn(LogInDTO logInDTO) {
     return memberCommandService.logIn(logInDTO);
   }
 
-  @Transactional
   public Member registerMember(MemberDTO memberDTO) {
     return memberCommandService.registerMember(memberDTO);
   }
