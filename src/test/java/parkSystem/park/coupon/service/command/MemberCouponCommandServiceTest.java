@@ -1,8 +1,10 @@
 package parkSystem.park.coupon.service.command;
 
 import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
+@Slf4j
 class MemberCouponCommandServiceTest {
 
     @Autowired
@@ -82,19 +85,20 @@ class MemberCouponCommandServiceTest {
 
         List<Member> all = memberRepository.findAll();
         for (Member member : all) {
-            System.out.println(member.getUsername());
+            log.info("{}",member.getUsername());
         }
 
     }
 
     @Test
+    @DisplayName("선착순 쿠폰 순차 테스트")
     void createCouponEventPublish() {
         //when
         for(int i=1; i<=50; i++){
             CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+i, 1L);
             memberCouponCommandService.createCouponEventPublish(couponEventPublishReqDTO);
             Coupon coupon = couponRepository.findById(1L).get();
-            System.out.println(coupon.getCount());
+            log.info("{}", coupon.getCount());
         }
 
         //then
@@ -103,6 +107,7 @@ class MemberCouponCommandServiceTest {
     }
 
     @Test
+    @DisplayName("선착순 쿠폰 동시성 테스트")
     void createCouponEventPublish2() throws InterruptedException {
         //when
         ExecutorService executorsService = Executors.newFixedThreadPool(100);
@@ -115,7 +120,7 @@ class MemberCouponCommandServiceTest {
                     CouponEventPublishReqDTO couponEventPublishReqDTO = new CouponEventPublishReqDTO("user"+memberId, 1L);
                     memberCouponCommandService.createCouponEventPublish(couponEventPublishReqDTO);
                 }catch (CouponEmptyException e){
-                    System.out.println("쿠폰 소진!!!");
+                    log.info("쿠폰 소진!!!");
                 }finally {
                     latch.countDown();
                 }
