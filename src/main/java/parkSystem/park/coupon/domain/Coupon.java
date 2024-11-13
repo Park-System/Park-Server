@@ -1,6 +1,7 @@
 package parkSystem.park.coupon.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,21 +31,19 @@ public class Coupon {
 
     private String endDate;
 
-    @Enumerated(EnumType.STRING)
-    private CouponStatus status;
     private int total_count;
+
     private int count;
 
     @OneToOne(mappedBy = "coupon", fetch = FetchType.LAZY)
     private CouponEvent couponEvent;
 
     @Builder
-    public Coupon(String couponName, int disCountRate, String startDate, String endDate, CouponStatus status, int total_count, int count) {
+    public Coupon(String couponName, int disCountRate, String startDate, String endDate, int total_count, int count) {
         this.couponName = couponName;
         this.disCountRate = disCountRate;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.status = status;
         this.total_count = total_count;
         this.count = count;
     }

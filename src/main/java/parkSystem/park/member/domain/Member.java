@@ -1,13 +1,17 @@
 package parkSystem.park.member.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import parkSystem.park.member.domain.enums.UserRole;
+import parkSystem.park.member.domain.enums.UserType;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode(of="id")
 @Getter
 public class Member {
 
@@ -27,25 +31,15 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    public Member(String password, String email, String username, String nice_name, UserRole role) {
+    @Enumerated(EnumType.STRING)
+    private UserType type;
+
+    public Member(String password, String email, String username, String nice_name, UserRole role, UserType type) {
         this.password = password;
         this.email = email;
         this.username = username;
         this.nice_name = nice_name;
         this.role = role;
+        this.type = type;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
