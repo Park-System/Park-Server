@@ -267,7 +267,7 @@ class ReservationServiceTest {
         ReservationReqDTO reservationReqDTO1 = new ReservationReqDTO(cars.getId(), parkingSpot1.getId(), parkingInfo.getId());
 
 
-        reservationCommandService.reservation(reservationReqDTO);
+        ReservationResDTO reservation = reservationCommandService.reservation(reservationReqDTO);
         reservationCommandService.reservation(reservationReqDTO1);// 해당 예약은 r
 
        //when
@@ -288,9 +288,13 @@ class ReservationServiceTest {
 
         ParkingSpot findParkingSpot = parkingSpotRepository.findById(parkingSpot.getId()).get();
 
+        Reservation findByReservation = reservationRepository.findById(reservation.reservationId()).get();
+
         //then
         Assertions.assertThat(findParkingSpot.isSpotAvailable()).isEqualTo(true);
         Assertions.assertThat(findParkingInfo.getParkingAmount()).isEqualTo(100);
+        Assertions.assertThat(findByReservation.getStatus()).isEqualTo(ReservationStatus.ARCHIVED);
+
 
     }
 

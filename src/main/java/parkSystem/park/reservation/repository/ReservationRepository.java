@@ -19,8 +19,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByLimitDepositTime(@Param("status") ReservationStatus status);
 
     @Modifying(clearAutomatically = true)
-    @Query("update Reservation r set r.status =  'FAIL' WHERE r.id IN :reservationIds")
-    void updateStatus(@Param("reservationIds") List<Long> reservationIds);
+    @Query("update Reservation r set r.status =  :status WHERE r.id IN :reservationIds")
+    void updateStatus(@Param("status") ReservationStatus status ,@Param("reservationIds") List<Long> reservationIds);
 
 
 

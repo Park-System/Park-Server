@@ -13,6 +13,7 @@ import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
 import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
+import parkSystem.park.reservation.domain.enums.ReservationStatus;
 import parkSystem.park.reservation.repository.ReservationRepository;
 import parkSystem.park.reservation.service.query.ReservationQueryService;
 
@@ -72,8 +73,8 @@ public class ReservationCommandService {
     }
 
 
-    public void cancelBulkReservation(List<Long> reservationIds){
-        reservationRepository.updateStatus(reservationIds);
+    public void updateBulkReservation(ReservationStatus reservationStatus, List<Long> reservationIds){
+        reservationRepository.updateStatus(reservationStatus, reservationIds);
     }
 
 

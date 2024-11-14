@@ -57,6 +57,10 @@ public class ReservationService {
             parkingSpotCommandService.updateParkingSpotAvailable(reservationList);
 
             parkingInfoCommandService.updateParkingInfoAmount(reservationList);
+
+            List<Long> longs = reservationList.stream().map(Reservation::getId).toList();
+
+            reservationCommandService.updateBulkReservation(ReservationStatus.ARCHIVED, longs);
         }
 
     }
@@ -64,13 +68,13 @@ public class ReservationService {
     public void bulk_update_CancelStatus() {
         log.info("RollBack cancel status");
 
-        List<Reservation> reservationList = reservationQueryService.findByWaitStats(ReservationStatus.WAIT);
+        List<Reservation> reservationList = reservationQueryService.findByWaitAndLimit(ReservationStatus.WAIT);
 
         if(!reservationList.isEmpty()){
             log.info("limit Time reservation");
             List<Long> longs = reservationList.stream().map(Reservation::getId).toList();
 
-            reservationCommandService.cancelBulkReservation(longs);
+            reservationCommandService.updateBulkReservation(ReservationStatus.FAIL,longs);
         }
     }
 
