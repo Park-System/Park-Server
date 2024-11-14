@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("select r FROM Reservation r where r.status = :status")
+    @Query("select r FROM Reservation r join fetch r.parkingSpot where r.status = :status")
     List<Reservation> findByStatus(@Param("status") ReservationStatus status);
 
 
@@ -21,7 +21,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Modifying(clearAutomatically = true)
     @Query("update Reservation r set r.status =  :status WHERE r.id IN :reservationIds")
     void updateStatus(@Param("status") ReservationStatus status ,@Param("reservationIds") List<Long> reservationIds);
-
-
 
 }

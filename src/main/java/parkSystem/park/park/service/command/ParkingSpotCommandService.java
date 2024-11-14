@@ -18,9 +18,17 @@ public class ParkingSpotCommandService {
     private final ParkingSpotRepository parkingSpotRepository;
 
 
+
     public void updateParkingSpotAvailable(List<Reservation> reservations){
-        List<Long> longs = reservations.stream().map(Reservation::getId).toList();
+        log.info("Parking Spot is available");
+        List<Long> longs = reservations.stream().map(ParkingSpotCommandService::apply).toList();
+
+
 
         parkingSpotRepository.updateSpotAvailable(longs);
+    }
+
+    private static Long apply(Reservation reservation) {
+        return reservation.getParkingSpot().getId();
     }
 }

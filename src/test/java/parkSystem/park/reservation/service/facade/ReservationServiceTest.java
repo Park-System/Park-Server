@@ -160,11 +160,18 @@ class ReservationServiceTest {
 
         List<Reservation> findUpdate = reservationRepository.findAll();
 
+        System.out.println("-------------------------------");
+
+
+        boolean allSpotsAvailable = findUpdate.stream()
+                .allMatch(reservation -> reservation.getParkingSpot().isSpotAvailable());
+
 
         //then
 
         Assertions.assertThat(findUpdate.get(0).getParkingSpot().isSpotAvailable()).isTrue();
         Assertions.assertThat(parkingInfo.getParkingAmount()).isEqualTo(97);
+        Assertions.assertThat(allSpotsAvailable).isEqualTo(true);
 
     }
 
@@ -244,7 +251,7 @@ class ReservationServiceTest {
        //when
         Thread.sleep(6000); //현재 만료시간 5초 이므로
 
-        reservationService.bulk_update_CancelStatus();
+        reservationService.bulkUpdateCancel();
 
         Reservation findByReservation = reservationQueryService.findReservationById(saveReservation.reservationId());
         //then
@@ -280,9 +287,13 @@ class ReservationServiceTest {
         System.out.println("parkingInfos.getParkingAmount() = " + parkingInfos.getParkingAmount());
 
 
-        reservationService.bulk_update_CancelStatus();
 
-        reservationService.bulk_reservationRollBack();
+
+        reservationService.bulkUpdateCancel();
+
+        reservationService.bulkReservation();
+
+
 
         ParkingInfo findParkingInfo = parkingInfoRepository.findById(parkingInfo.getId()).get();
 

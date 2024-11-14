@@ -9,6 +9,7 @@ import parkSystem.park.car.service.query.CarQueryService;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.park.service.command.ParkingInfoCommandService;
+import parkSystem.park.park.service.command.ParkingSpotCommandService;
 import parkSystem.park.park.service.query.ParkingSpotQueryService;
 import parkSystem.park.reservation.controller.dto.ReservationReqDTO;
 import parkSystem.park.reservation.controller.dto.ReservationResDTO;
@@ -29,11 +30,14 @@ public class ReservationCommandService {
 
     private final ParkingSpotQueryService parkingSpotQueryService;
 
+    private final ParkingSpotCommandService parkingSpotCommandService;
+
     private final ParkingInfoCommandService parkingInfoCommandService;
 
     private final CarQueryService carQueryService;
 
     private final ReservationQueryService reservationQueryService;
+
 
 
     /**
@@ -72,11 +76,41 @@ public class ReservationCommandService {
         findByReservation.failDeposit();
     }
 
+    public void bulkReservationRollBack() {
+        log.info("RollBack reservation");
+
+        List<Reservation> reservationList = reservationQueryService.findByWaitStats(ReservationStatus.FAIL);
+
+        if(!reservationList.isEmpty()) {
+            parkingSpotCommandService.updateParkingSpotAvailable(reservationList);
+
+            parkingInfoCommandService.updateParkingInfoAmount(reservationList);
+
+            List<Long> longs = reservationList.stream().map(Reservation::getId).toList();
+
+            updateBulkReservation(ReservationStatus.ARCHIVED, longs);
+        }
+
+    }
+
+
+    public void bulk_update_CancelStatus() {
+        log.info("RollBack cancel status");
+
+        List<Reservation> reservationList = reservationQueryService.findByWaitAndLimit(ReservationStatus.WAIT);
+
+        if(!reservationList.isEmpty()){
+            log.info("limit Time reservation");
+            List<Long> longs = reservationList.stream().map(Reservation::getId).toList();
+
+            updateBulkReservation(ReservationStatus.FAIL,longs);
+        }
+    }
+
 
     public void updateBulkReservation(ReservationStatus reservationStatus, List<Long> reservationIds){
         reservationRepository.updateStatus(reservationStatus, reservationIds);
     }
-
 
 
 }

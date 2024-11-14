@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.reservation.domain.Reservation;
 import parkSystem.park.reservation.service.query.ReservationQueryService;
 
@@ -21,6 +22,7 @@ public class RedisService  {
     private final ReservationQueryService reservationQueryService;
 
 
+    @Transactional
     public void setAuctionExpiredKey(Long reservationId){
 
         log.info("에약아이디 ={}" , reservationId);

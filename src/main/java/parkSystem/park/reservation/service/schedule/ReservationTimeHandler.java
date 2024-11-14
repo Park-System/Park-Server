@@ -23,7 +23,7 @@ public class ReservationTimeHandler {
 
     @Scheduled(fixedRate = SCHEDULED_CANCEL_ROLLBACK_TIME)
     public void rollBackReservation(){
-        reservationService.bulk_reservationRollBack();
+        reservationService.bulkReservation();
     }
 
     /**
@@ -31,7 +31,7 @@ public class ReservationTimeHandler {
      */
     @Scheduled(fixedRate = SCHEDULED_CANCEL_TIME)
     public void rollBackCancelStatus(){
-        reservationService.bulk_update_CancelStatus();
+        reservationService.bulkUpdateCancel();
     }
 
 
