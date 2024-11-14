@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.car.domain.Cars;
 import parkSystem.park.car.service.query.CarQueryService;
+import parkSystem.park.common.config.exception.ExistParkingSpotCarsException;
 import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.park.service.command.ParkingInfoCommandService;
@@ -38,8 +39,6 @@ public class ReservationCommandService {
 
     private final ReservationQueryService reservationQueryService;
 
-
-
     /**
      *
      * 예매를 먼저 실행하여 예매 상태 변경 후 결제는 외부 API를 사용하기 때문에 이벤트처리를 하여
@@ -48,6 +47,8 @@ public class ReservationCommandService {
      */
 
     public ReservationResDTO reservation(ReservationReqDTO reservationReqDTO){
+
+//        validationParkingSpot(reservationReqDTO);
 
         Cars findCars = carQueryService.findByCarId(reservationReqDTO.carsId()); //보유 차량 찾아옴
 
@@ -73,7 +74,10 @@ public class ReservationCommandService {
 
         Reservation findByReservation = reservationQueryService.findReservationById(reservationId);
 
-        findByReservation.failDeposit();
+        if(findByReservation.getStatus()  == ReservationStatus.WAIT){
+            findByReservation.failDeposit();
+        }
+
     }
 
     public void bulkReservationRollBack() {
@@ -110,6 +114,15 @@ public class ReservationCommandService {
 
     public void updateBulkReservation(ReservationStatus reservationStatus, List<Long> reservationIds){
         reservationRepository.updateStatus(reservationStatus, reservationIds);
+    }
+
+
+    private void validationParkingSpot(ReservationReqDTO reservationReqDTO) {
+        Reservation findByReservation= reservationRepository.findByCarId(reservationReqDTO.carsId(), ReservationStatus.WAIT);
+
+        if(findByReservation != null){
+            throw new ExistParkingSpotCarsException("해당 자동차는 이미 주차중입니다");
+        }
     }
 
 

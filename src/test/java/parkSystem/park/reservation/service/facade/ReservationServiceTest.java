@@ -23,7 +23,6 @@ import parkSystem.park.reservation.controller.dto.ReservationResDTO;
 import parkSystem.park.reservation.domain.Reservation;
 import parkSystem.park.reservation.domain.enums.ReservationStatus;
 import parkSystem.park.reservation.repository.ReservationRepository;
-import parkSystem.park.reservation.service.command.ReservationCommandService;
 import parkSystem.park.reservation.service.query.ReservationQueryService;
 
 import java.util.List;
@@ -47,8 +46,6 @@ class ReservationServiceTest {
     @Autowired
     private ReservationQueryService reservationQueryService;
 
-    @Autowired
-    private ReservationCommandService reservationCommandService;
 
 
     @Autowired
@@ -245,7 +242,7 @@ class ReservationServiceTest {
        //given
         ReservationReqDTO reservationReqDTO = new ReservationReqDTO(cars.getId(), parkingSpot.getId(), parkingInfo.getId());
 
-        ReservationResDTO saveReservation = reservationCommandService.reservation(reservationReqDTO); // 해당 예약은 redis를 사용하지 않은 순수 예약
+        ReservationResDTO saveReservation = reservationService.reservation(reservationReqDTO); // 해당 예약은 redis를 사용하지 않은 순수 예약
 
 
        //when
@@ -274,8 +271,8 @@ class ReservationServiceTest {
         ReservationReqDTO reservationReqDTO1 = new ReservationReqDTO(cars.getId(), parkingSpot1.getId(), parkingInfo.getId());
 
 
-        ReservationResDTO reservation = reservationCommandService.reservation(reservationReqDTO);
-        reservationCommandService.reservation(reservationReqDTO1);// 해당 예약은 r
+        ReservationResDTO reservation = reservationService.reservation(reservationReqDTO);
+        reservationService.reservation(reservationReqDTO1);// 해당 예약은 r
 
        //when
         Thread.sleep(6000);
