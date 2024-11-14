@@ -1,8 +1,11 @@
 package parkSystem.park.reservation.controller.dto;
 
 public record DepositResDTO(
-        Long reservationId,
-
-        String importId
+        boolean success,
+        String message
 ) {
+
+    public static DepositResDTO success(String message) {
+        return new DepositResDTO(true, message);
+    }
 }

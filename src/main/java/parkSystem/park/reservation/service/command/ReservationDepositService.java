@@ -3,6 +3,7 @@ package parkSystem.park.reservation.service.command;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.Payment;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import parkSystem.park.reservation.controller.dto.DepositReqDTO;
 import parkSystem.park.reservation.domain.Reservation;
+import parkSystem.park.reservation.domain.enums.ReservationStatus;
 import parkSystem.park.reservation.service.query.ReservationQueryService;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 
 @Service
@@ -38,16 +40,18 @@ public class ReservationDepositService {
     }
 
     @Transactional
-    public void depositReservation(Long reservationId, String imp_uid) throws IamportResponseException, IOException {
-        Payment payment = iamportClient.paymentByImpUid(imp_uid).getResponse();
+    public void depositReservation(DepositReqDTO depositResDTO) throws IamportResponseException, IOException {
+        Payment payment = iamportClient.paymentByImpUid(depositResDTO.importId()).getResponse();
 
-        Reservation findByReservation = reservationQueryService.findReservationById(reservationId); //예약찾음
+        Reservation findByReservation = reservationQueryService.findReservationById(depositResDTO.reservationId()); //예약찾음
 
 
-        if(findByReservation.getLimitDepositTime().isBefore(LocalDateTime.now())) {
+        if(findByReservation.getStatus() != ReservationStatus.WAIT) {
             findByReservation.failDeposit();
             log.info("시간 초과로 인해 결제가 실패했습니다.");
 
+            //아임 포트 결제 취소
+            iamportClient.cancelPaymentByImpUid(new CancelData(depositResDTO.importId(), true));
             return;
         }
 
@@ -58,6 +62,7 @@ public class ReservationDepositService {
         else{
             findByReservation.failDeposit();
             log.info("결제 실패");
+            return;
         }
 
     }

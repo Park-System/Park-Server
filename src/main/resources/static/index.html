@@ -16,58 +16,93 @@
     <label for="parkingSpotId">Parking Spot ID:</label>
     <input type="text" id="parkingSpotId" name="parkingSpotId" required><br><br>
 
-    <button type="button" onclick="makeReservation()">예약 및 결제</button>
+    <label for="parkingInfoId">Parking Info ID:</label>
+    <input type="text" id="parkingInfoId" name="parkingInfoId"><br><br>
+
+    <button type="button" onclick="makeReservation()">예약</button>
 </form>
+
+<div id="depositSection" style="display: none;">
+    <h2>보증금 결제</h2>
+    <button type="button" onclick="makeDeposit()">보증금 결제하기</button>
+</div>
 
 <div id="result"></div> <!-- 결과를 표시할 영역 -->
 
 <script>
+    let reservationId;
+
     function makeReservation() {
         const carId = document.getElementById("carId").value;
         const parkingSpotId = document.getElementById("parkingSpotId").value;
+        const parkingInfoId = document.getElementById("parkingInfoId").value;
 
-        // 아임포트 초기화
+        fetch('/reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                carsId: carId,
+                parkingSpotId: parkingSpotId,
+                parkingInfoId: parkingInfoId
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.reservationId) { // 예약 성공
+                    reservationId = data.reservationId;
+                    document.getElementById("result").innerText = "예약이 성공적으로 완료되었습니다!";
+                    document.getElementById("depositSection").style.display = 'block';
+                } else {
+                    document.getElementById("result").innerText = "예약 실패: " + data.message;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = "예약 처리 중 오류가 발생했습니다.";
+            });
+    }
+
+    function makeDeposit() {
         const IMP = window.IMP;
         IMP.init('imp34307077'); // 아임포트 '가맹점 식별코드'로 변경해야 합니다.
 
         IMP.request_pay({
-            pg: "html5_inicis", // 사용할 PG사
-            pay_method: "card", // 결제 수단
-            merchant_uid: "merchant_" + new Date().getTime(), // 주문 번호
-            name: "주차 예약 결제", // 결제 명칭
-            amount: 100, // 결제 금액 (원화)
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: "merchant_" + new Date().getTime(),
+            name: "주차 예약 보증금 결제",
+            amount: 100,
             buyer_email: "test@example.com",
             buyer_name: "홍길동",
             buyer_tel: "010-1234-5678"
-        }, function (rsp) { // 콜백 함수
+        }, function (rsp) {
             if (rsp.success) {
-                // 결제가 완료된 경우 서버에 예약 및 결제 정보를 전달
-                fetch('/reservation', {
+                fetch('/reservation/deposit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        carsId: carId,
-                        parkingSpotId: parkingSpotId,
-                        importId: rsp.imp_uid // Iamport에서 반환한 결제 ID
+                        reservationId: reservationId,
+                        importId: rsp.imp_uid
                     })
                 })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            document.getElementById("result").innerText = "예약 및 결제가 성공적으로 처리되었습니다!";
+                            document.getElementById("result").innerText = "보증금 결제가 성공적으로 처리되었습니다!";
                         } else {
-                            document.getElementById("result").innerText = "결제 실패: " + data.message;
+                            document.getElementById("result").innerText = "보증금 결제 실패: " + data.message;
                         }
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        document.getElementById("result").innerText = "요청 처리 중 오류가 발생했습니다.";
+                        document.getElementById("result").innerText = "보증금 결제 처리 중 오류가 발생했습니다.";
                     });
             } else {
-                // 결제 실패 시
-                document.getElementById("result").innerText = "결제 실패: " + rsp.error_msg;
+                document.getElementById("result").innerText = "보증금 결제 실패: " + rsp.error_msg;
             }
         });
     }

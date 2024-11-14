@@ -20,4 +20,24 @@ public class ApiExceptionController {
         return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ImportException.class)
+    public ResponseEntity<ErrorResult> handleNotFoundException(ImportException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", "ImportException"), HttpStatus.NOT_FOUND);
+    }
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ExistParkingSpotCarsException.class)
+    public ResponseEntity<ErrorResult> handleNotFoundException(ExistParkingSpotCarsException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("BAD_REQUEST", ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+
+
 }

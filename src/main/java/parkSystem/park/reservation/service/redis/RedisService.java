@@ -22,7 +22,7 @@ public class RedisService  {
     private final ReservationQueryService reservationQueryService;
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void setAuctionExpiredKey(Long reservationId){
 
         log.info("에약아이디 ={}" , reservationId);
@@ -37,7 +37,6 @@ public class RedisService  {
         Duration ttl = Duration.between(LocalDateTime.now(), reservation.getLimitDepositTime());
 
         Duration testDuration = Duration.ofSeconds(5);// 5초 TTL 설정
-
 
         String redisKey = "reservationId:" + reservationId;
 

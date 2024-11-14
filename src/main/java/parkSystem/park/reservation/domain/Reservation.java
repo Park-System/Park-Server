@@ -75,6 +75,6 @@ public class Reservation extends BaseEntity {
     }
 
     public void countDown(){
-        limitDepositTime = this.getCreatedDate().plusSeconds(DURATION_TIME);
+        limitDepositTime = this.getCreatedDate().plusMinutes(DURATION_TIME);
     }
 }
