@@ -13,6 +13,8 @@ import parkSystem.park.coupon.exception.CouponEmptyException;
 import parkSystem.park.coupon.repository.CouponEventRepository;
 import parkSystem.park.coupon.repository.CouponRepository;
 import parkSystem.park.coupon.repository.MemberCouponRepository;
+import parkSystem.park.coupon.service.query.CouponEventQueryService;
+import parkSystem.park.coupon.service.query.CouponQueryService;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.repository.MemberRepository;
 
@@ -26,8 +28,8 @@ import java.time.format.DateTimeFormatter;
 public class MemberCouponCommandService {
 
     private final MemberRepository memberRepository;
-    private final CouponEventRepository couponEventRepository;
-    private final CouponRepository couponRepository;
+    private final CouponQueryService couponQueryService;
+    private final CouponEventQueryService couponEventQueryService;
     private final MemberCouponRepository memberCouponRepository;
 
     public MemberCoupon createCouponEventPublish(CouponEventPublishReqDTO couponEventPublishReqDTO){
@@ -37,10 +39,9 @@ public class MemberCouponCommandService {
         Long eventId = couponEventPublishReqDTO.eventId();
 
         Member member = memberRepository.findByUsername(username).get();
-        CouponEvent couponEvent = couponEventRepository.findById(eventId).get();
+        CouponEvent couponEvent = couponEventQueryService.findCouponEventById(eventId);
         //LockMode Coupon 쿼리
-        Coupon coupon = couponRepository.findByIdForUpdate(couponEvent.getCoupon().getId());
-
+        Coupon coupon = couponQueryService.findCouponByIdForUpdate(couponEvent.getCoupon().getId());
         //쿠폰 활성화 여부 체크 메서드
         CouponStatus couponStatus = getCouponStatus(coupon);
 
