@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import parkSystem.park.common.dto.response.CommonResponse;
+import parkSystem.park.coupon.dto.request.CouponEventPublishReqDTO;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.dto.response.CouponEventListResDTO;
 import parkSystem.park.coupon.service.facade.CouponEventService;
@@ -32,4 +33,5 @@ public class CouponEventController {
         List<CouponEventListResDTO> allEvents = couponEventService.findAllEvents();
         return new ResponseEntity<>(allEvents, HttpStatus.OK);
     }
+
 }
