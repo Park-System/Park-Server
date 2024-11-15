@@ -30,4 +30,5 @@ public class CouponEventService {
     public CouponEvent createEvent(CouponEventReqDTO couponEventReqDTO){
         return couponEventCommandService.createEvent(couponEventReqDTO);
     }
+
 }

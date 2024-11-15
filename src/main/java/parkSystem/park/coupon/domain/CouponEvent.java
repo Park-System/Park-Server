@@ -17,7 +17,7 @@ public class CouponEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_id")
+    @Column(name = "eventId")
     private Long id;
 
     private String event_title;
@@ -31,7 +31,7 @@ public class CouponEvent {
     @Enumerated(EnumType.STRING)
     private EventStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     Coupon coupon;
 

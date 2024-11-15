@@ -13,7 +13,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
   redis:
     host: localhost
     port: 6379
@@ -23,3 +22,6 @@ imp:
   api:
     key: 1284273145317545
     secretKey: vpoTXNZU3NKYKEy14dF4soS9Dv5oOVusCkNeMXXC2nlio2UHC0UuTt4b826AetbleecMkqCNJENImZEq
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
