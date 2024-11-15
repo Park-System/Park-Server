@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import parkSystem.park.coupon.domain.enums.CouponStatus;
 import parkSystem.park.member.domain.Member;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -40,4 +43,5 @@ public class MemberCoupon {
         this.count = count;
         this.status = status;
     }
+
 }
