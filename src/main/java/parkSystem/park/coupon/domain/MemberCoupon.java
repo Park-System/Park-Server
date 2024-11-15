@@ -3,10 +3,14 @@ package parkSystem.park.coupon.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.coupon.domain.enums.CouponStatus;
 import parkSystem.park.member.domain.Member;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,8 +36,12 @@ public class MemberCoupon {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
-    public MemberCoupon(Member member, Coupon coupon) {
+    @Builder
+    public MemberCoupon(Member member, Coupon coupon, int count, CouponStatus status) {
         this.member = member;
         this.coupon = coupon;
+        this.count = count;
+        this.status = status;
     }
+
 }

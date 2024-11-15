@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.coupon.domain.Coupon;
 import parkSystem.park.coupon.dto.response.CouponListResDTO;
+import parkSystem.park.coupon.exception.NotFoundCouponException;
 import parkSystem.park.coupon.repository.CouponRepository;
 
 import java.util.List;
@@ -19,5 +20,10 @@ public class CouponQueryService {
     public List<CouponListResDTO> findAllCoupons(){
         List<Coupon> list = couponRepository.findAll();
         return list.stream().map(CouponListResDTO::toDto).toList();
+    }
+
+    public Coupon findCouponByIdForUpdate(Long couponId) {
+        return couponRepository.findByIdForUpdate(couponId)
+                .orElseThrow(() -> new NotFoundCouponException("쿠폰이 존재하지않습니다 : " + couponId));
     }
 }

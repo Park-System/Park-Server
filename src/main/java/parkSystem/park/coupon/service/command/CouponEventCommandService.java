@@ -6,10 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.coupon.domain.Coupon;
 import parkSystem.park.coupon.domain.CouponEvent;
+import parkSystem.park.coupon.domain.MemberCoupon;
+import parkSystem.park.coupon.domain.enums.CouponStatus;
 import parkSystem.park.coupon.domain.enums.EventStatus;
+import parkSystem.park.coupon.dto.request.CouponEventPublishReqDTO;
 import parkSystem.park.coupon.dto.request.CouponEventReqDTO;
 import parkSystem.park.coupon.repository.CouponEventRepository;
 import parkSystem.park.coupon.repository.CouponRepository;
+import parkSystem.park.coupon.repository.MemberCouponRepository;
+import parkSystem.park.member.domain.Member;
+import parkSystem.park.member.repository.MemberRepository;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +27,8 @@ public class CouponEventCommandService {
 
     private final CouponEventRepository couponEventRepository;
     private final CouponRepository couponRepository;
+    private final MemberRepository memberRepository;
+    private final MemberCouponRepository memberCouponRepository;
 
     public CouponEvent createEvent(CouponEventReqDTO couponEventReqDTO){
 
@@ -47,4 +55,5 @@ public class CouponEventCommandService {
 
         return couponEventRepository.save(couponEvent);
     }
+
 }

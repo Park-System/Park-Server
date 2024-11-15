@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import parkSystem.park.coupon.domain.enums.CouponStatus;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,4 +48,25 @@ public class Coupon {
         this.total_count = total_count;
         this.count = count;
     }
+
+    public void updateCount(int count){
+        this.count=count;
+    }
+
+    public static CouponStatus getCouponStatus(Coupon coupon) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime startDate = LocalDateTime.parse(coupon.getStartDate(), formatter);
+        LocalDateTime endDate = LocalDateTime.parse(coupon.getEndDate(), formatter);
+        LocalDateTime now = LocalDateTime.now();
+        CouponStatus couponStatus;
+
+        // 쿠폰 시작, 종료일과 현재일을 비교하여 이벤트의 상태 여부 결정
+        if((now.isEqual(startDate) || now.isAfter(startDate)) && (now.isEqual(endDate) || now.isBefore(endDate))){
+            couponStatus=CouponStatus.ON;
+        }else couponStatus=CouponStatus.OFF;
+
+        return couponStatus;
+    }
+
 }
