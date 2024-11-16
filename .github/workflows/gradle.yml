@@ -29,6 +29,18 @@ jobs:
       with:
         redis-version: 6
 
+    - name: Set up secret yml file
+      env:
+        YAML_SECRET: ${{ secrets.YAML_SECRET }}
+        YAML_DIR: src/main/resources
+        YAML_TEST_DIR: src/test/resources
+        YAML_FILE_NAME: application-secret.yml
+      run: |
+        echo $YAML_SECRET | base64 --decode > $YAML_DIR/$YAML_FILE_NAME
+        echo $YAML_SECRET | base64 --decode > $YAML_TEST_DIR/$YAML_FILE_NAME
+        echo "YAML_SECRET has been decoded and saved to $YAML_DIR/$YAML_FILE_NAME"
+        echo "YAML_SECRET has been decoded and saved to $YAML_TEST_DIR/$YAML_FILE_NAME"
+
     # Wait for Redis to start (Optional but recommended)
     - name: Wait for Redis to be ready
       run: sleep 10  # 10초 정도 대기 (Redis가 시작될 시간을 고려)
