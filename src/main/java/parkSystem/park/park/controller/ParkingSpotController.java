@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import parkSystem.park.park.dto.response.ParkingSpotResDTO;
-import parkSystem.park.park.service.Facade.ParkingSpotService;
+import parkSystem.park.park.controller.dto.response.ParkingSpotResDTO;
+import parkSystem.park.park.service.facade.ParkingSpotFacade;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Tag(name = "ParkingSpot", description = "ParkingSpot API")
 public class ParkingSpotController {
 
-    private final ParkingSpotService parkingSpotService;
+    private final ParkingSpotFacade parkingSpotService;
 
 
     @GetMapping("/{parkingInfoId}")

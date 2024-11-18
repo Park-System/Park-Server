@@ -5,14 +5,20 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.car.domain.Cars;
+import parkSystem.park.common.baseEntity.BaseEntity;
+import parkSystem.park.park.domain.ParkingInfo;
 import parkSystem.park.park.domain.ParkingSpot;
 import parkSystem.park.payment.domain.Payment;
 import parkSystem.park.reservation.domain.enums.ReservationStatus;
 
+import java.time.LocalDateTime;
+
+import static parkSystem.park.reservation.ReservationConst.DURATION_TIME;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Reservation {
+public class Reservation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +41,40 @@ public class Reservation {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot, Payment payment) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parking_info_id")
+    private ParkingInfo parkingInfo;
+
+    private LocalDateTime limitDepositTime;
+
+    @PrePersist
+    public void initializeLimitDepositTime() {
+        this.countDown();
+    }
+
+    public Reservation(ReservationStatus status, Cars car, ParkingSpot parkingSpot, ParkingInfo parkingInfo) {
         this.status = status;
         this.car = car;
         this.parkingSpot = parkingSpot;
-        this.payment = payment;
+        this.parkingInfo = parkingInfo;
+    }
+
+    public static Reservation createReservation(Cars car, ParkingSpot parkingSpot, ParkingInfo parkingInfo){
+        parkingSpot.reservationSpot();
+        parkingInfo.decreaseParkingAmount(); // 예약 시에 주차 자리 감소;
+
+        return new Reservation(ReservationStatus.WAIT, car, parkingSpot, parkingInfo);
+    }
+
+    public void successDeposit(){
+        this.status = ReservationStatus.COMPLETE;
+    }
+
+    public void failDeposit(){
+        this.status = ReservationStatus.FAIL;
+    }
+
+    public void countDown(){
+        limitDepositTime = this.getCreatedDate().plusMinutes(DURATION_TIME);
     }
 }

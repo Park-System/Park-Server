@@ -27,11 +27,22 @@ public class ParkingSpot {
     @JoinColumn(name = "parking_info_id")
     private ParkingInfo parkingInfo;
 
+    //주차 가능 여부
+    private boolean spotAvailable;
+
 
     @Builder
     public ParkingSpot(ParkingType parkingType, String parkingSpotName, ParkingInfo parkingInfo) {
         this.parkingType = parkingType;
         this.parkingSpotName = parkingSpotName;
         this.parkingInfo = parkingInfo;
+    }
+
+    public void reservationSpot(){
+        this.spotAvailable = false;
+    }
+
+    public void unReservationSpot(){
+        this.spotAvailable = true;
     }
 }
