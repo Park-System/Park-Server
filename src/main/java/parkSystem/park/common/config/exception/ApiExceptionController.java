@@ -10,6 +10,7 @@ import parkSystem.park.common.config.dto.ErrorResult;
 import parkSystem.park.coupon.exception.CouponEmptyException;
 import parkSystem.park.coupon.exception.NotFoundCouponEventException;
 import parkSystem.park.coupon.exception.NotFoundCouponException;
+import parkSystem.park.luckDraw.exception.NotFoundLuckyDrawException;
 
 @RestController
 @Slf4j
@@ -59,6 +60,14 @@ public class ApiExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ExistParkingSpotCarsException.class)
     public ResponseEntity<ErrorResult> handleNotFoundException(ExistParkingSpotCarsException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("BAD_REQUEST", ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundLuckyDrawException.class)
+    public ResponseEntity<ErrorResult> notFoundLuckyDrawException(NotFoundLuckyDrawException ex) {
         log.error("[exceptionHandle] ex", ex);
 
         return new ResponseEntity<>(ErrorResult.toDto("BAD_REQUEST", ex.getMessage()), HttpStatus.NOT_FOUND);
