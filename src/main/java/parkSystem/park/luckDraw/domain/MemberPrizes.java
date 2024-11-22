@@ -1,34 +1,30 @@
 package parkSystem.park.luckDraw.domain;
 
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import parkSystem.park.luckDraw.domain.enums.WinnerStatus;
 import parkSystem.park.member.domain.Member;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Winners {
-
+public class MemberPrizes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "winners_id")
+    @Column(name = "memberPrizes_id")
     private Long id;
 
-    private LocalDateTime winDate;
+    @Enumerated(EnumType.STRING)
+    private WinnerStatus winnerStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prize_id")
-    private Prizes prizes;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public Winners(LocalDateTime winDate, Prizes prizes) {
-        this.winDate = winDate;
-        this.prizes = prizes;
-    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prizes_id")
+    private Prizes prizes;
 }
