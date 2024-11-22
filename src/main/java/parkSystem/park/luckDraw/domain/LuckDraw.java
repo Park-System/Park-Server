@@ -3,6 +3,7 @@ package parkSystem.park.luckDraw.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class LuckDraw {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class LuckDraw {
 
     private LocalDateTime endDate;
 
+    @Builder
     public LuckDraw(String drawTitle, String description, LocalDateTime startDate, LocalDateTime endDate) {
         this.drawTitle = drawTitle;
         this.description = description;

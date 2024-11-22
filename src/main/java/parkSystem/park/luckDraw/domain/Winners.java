@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 public class Winners {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "winners_id")
