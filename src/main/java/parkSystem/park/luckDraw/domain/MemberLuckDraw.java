@@ -10,10 +10,10 @@ import parkSystem.park.member.domain.Member;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class MemberPrizes {
+public class MemberLuckDraw {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberPrizes_id")
+    @Column(name = "memberLuckDraw_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -25,6 +25,6 @@ public class MemberPrizes {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prizes_id")
-    private Prizes prizes;
+    @JoinColumn(name = "luckDraw_id")
+    private LuckDraw luckDraw;
 }

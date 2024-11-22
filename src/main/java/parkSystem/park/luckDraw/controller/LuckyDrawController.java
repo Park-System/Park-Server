@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import parkSystem.park.common.dto.response.CommonResponse;
+import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawReqDTO;
 import parkSystem.park.luckDraw.service.facade.LuckyDrawService;
 
@@ -26,7 +27,8 @@ public class LuckyDrawController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<CommonResponse> joinLuckyDraw(){
+    public ResponseEntity<CommonResponse> joinLuckyDraw(@RequestBody LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
+
         return null;
     }
 
