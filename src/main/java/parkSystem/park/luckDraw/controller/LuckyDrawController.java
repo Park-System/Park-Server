@@ -25,4 +25,9 @@ public class LuckyDrawController {
         return new ResponseEntity<>(commonResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/join")
+    public ResponseEntity<CommonResponse> joinLuckyDraw(){
+        return null;
+    }
+
 }
