@@ -2,6 +2,7 @@ package parkSystem.park.luckDraw.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import parkSystem.park.luckDraw.domain.enums.WinnerStatus;
@@ -27,4 +28,12 @@ public class MemberLuckDraw {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "luckDraw_id")
     private LuckDraw luckDraw;
+
+    @Builder
+    public MemberLuckDraw(Long id, WinnerStatus winnerStatus, Member member, LuckDraw luckDraw) {
+        this.id = id;
+        this.winnerStatus = winnerStatus;
+        this.member = member;
+        this.luckDraw = luckDraw;
+    }
 }

@@ -11,6 +11,7 @@ import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawReqDTO;
 import parkSystem.park.luckDraw.service.facade.LuckyDrawService;
+import parkSystem.park.luckDraw.service.facade.MemberLuckDrawService;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ import parkSystem.park.luckDraw.service.facade.LuckyDrawService;
 public class LuckyDrawController {
 
     private final LuckyDrawService luckyDrawService;
+    private final MemberLuckDrawService memberLuckDrawService;
 
     @PostMapping("/register")
     public ResponseEntity<CommonResponse> createLuckyDraw(@RequestBody LuckyDrawReqDTO luckyDrawReqDTO){
@@ -28,8 +30,9 @@ public class LuckyDrawController {
 
     @PostMapping("/join")
     public ResponseEntity<CommonResponse> joinLuckyDraw(@RequestBody LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
-
-        return null;
+        memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
+        CommonResponse commonResponse = new CommonResponse("200 OK", "럭키 드로우 이벤트 참여 완료.");
+        return new ResponseEntity<>(commonResponse, HttpStatus.OK);
     }
 
 }
