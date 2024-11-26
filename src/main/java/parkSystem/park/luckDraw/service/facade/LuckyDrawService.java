@@ -19,11 +19,11 @@ public class LuckyDrawService {
     private final LuckyDrawCommandService luckyDrawCommandService;
     private final LuckyDrawRaffleCommandService luckyDrawRaffleCommandService;
 
-    public LuckDraw createLuckyDraw(LuckyDrawReqDTO luckyDrawReqDTO){
+    public LuckDraw createLuckyDraw(LuckyDrawReqDTO luckyDrawReqDTO){ // 럭키 드로우 등록
         return luckyDrawCommandService.createLuckyDraw(luckyDrawReqDTO);
     }
 
-    public List<LuckDrawRaffleResDTO> raffleLuckyDraw(Long luckDrawId){
+    public List<LuckDrawRaffleResDTO> raffleLuckyDraw(Long luckDrawId){ // 럭키 드로우 추첨
         return luckyDrawRaffleCommandService.raffleLuckyDraw(luckDrawId);
     }
 }

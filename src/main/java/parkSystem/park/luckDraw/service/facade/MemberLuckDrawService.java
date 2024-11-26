@@ -12,7 +12,7 @@ public class MemberLuckDrawService {
 
     private final MemberLuckDrawCommandService memberLuckDrawCommandService;
 
-    public MemberLuckDraw joinLuckyDraw(LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
+    public MemberLuckDraw joinLuckyDraw(LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){ // 럭키 드로우 참여
         return memberLuckDrawCommandService.joinLuckyDraw(luckyDrawJoinReqDTO);
     }
 }

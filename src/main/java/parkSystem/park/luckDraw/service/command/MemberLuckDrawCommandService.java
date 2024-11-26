@@ -22,7 +22,12 @@ public class MemberLuckDrawCommandService {
     private final LuckDrawQueryService luckDrawQueryService;
     private final MemberLuckDrawRepository memberLuckDrawRepository;
 
+    /**
+     * 럭키 드로우 참여 서비스
+     */
+
     public MemberLuckDraw joinLuckyDraw(LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
+
         Long luckDrawId = luckyDrawJoinReqDTO.luckDraw_id();
         Long memberId = luckyDrawJoinReqDTO.member_id();
 

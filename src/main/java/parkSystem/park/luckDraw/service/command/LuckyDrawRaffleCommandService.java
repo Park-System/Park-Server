@@ -31,6 +31,10 @@ public class LuckyDrawRaffleCommandService {
     private final MemberLuckDrawQueryService memberLuckDrawQueryService;
     private final WinnersRepository winnersRepository;
 
+    /**
+     * 럭키 드로우 추첨 서비스
+     */
+
     public List<LuckDrawRaffleResDTO> raffleLuckyDraw(Long luckDrawId){
 
         log.info("추첨 서비스 동작");
@@ -42,6 +46,7 @@ public class LuckyDrawRaffleCommandService {
         log.info("memberLuckDrawSize : {}", memberLuckDrawList.size());
         log.info("prizesSize : {}", prizesList.size());
 
+        // 경품 갯수에 맞게 럭키 드로우 랜덤 추첨
         Collections.shuffle(memberLuckDrawList, new Random());
         List<MemberLuckDraw> raffleList = memberLuckDrawList.stream().limit(prizesList.size()).toList();
 
@@ -51,6 +56,7 @@ public class LuckyDrawRaffleCommandService {
             log.info("당첨자 : {}", memberLuckDraw.getMember().getUsername());
         }
 
+        // 경품에 당첨된 당첨자를 당첨자 테이블(Winners) insert
         int prizesCount=0;
         List<Winners> winnersList = new ArrayList<>();
         for (MemberLuckDraw memberLuckDraw : raffleList) {
