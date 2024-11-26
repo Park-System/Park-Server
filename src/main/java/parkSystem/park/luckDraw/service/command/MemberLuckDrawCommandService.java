@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.luckDraw.domain.LuckDraw;
 import parkSystem.park.luckDraw.domain.MemberLuckDraw;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
+import parkSystem.park.luckDraw.repository.MemberLuckDrawRepository;
 import parkSystem.park.luckDraw.service.query.LuckDrawQueryService;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.repository.MemberRepository;
@@ -19,6 +20,7 @@ public class MemberLuckDrawCommandService {
 
     private final MemberRepository memberRepository;
     private final LuckDrawQueryService luckDrawQueryService;
+    private final MemberLuckDrawRepository memberLuckDrawRepository;
 
     public MemberLuckDraw joinLuckyDraw(LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
         Long luckDrawId = luckyDrawJoinReqDTO.luckDraw_id();
@@ -32,7 +34,7 @@ public class MemberLuckDrawCommandService {
                 .member(member)
                 .build();
 
-        return memberLuckDraw;
+        return memberLuckDrawRepository.save(memberLuckDraw);
     }
 
 }
