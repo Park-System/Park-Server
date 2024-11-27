@@ -71,7 +71,7 @@ public class LuckyDrawRaffleCommandService {
 
         winnersRepository.saveAll(winnersList);
 
-        List<LuckDrawRaffleResDTO> list = new ArrayList<>();
+        /*List<LuckDrawRaffleResDTO> list = new ArrayList<>();
         for (Winners winners : winnersList) {
             LuckDrawRaffleResDTO luckDrawRaffleResDTO = new LuckDrawRaffleResDTO(
                     winners.getMember().getUsername(),
@@ -80,8 +80,8 @@ public class LuckyDrawRaffleCommandService {
             );
 
             list.add(luckDrawRaffleResDTO);
-        }
+        }*/
 
-        return list;
+        return winnersList.stream().map(LuckDrawRaffleResDTO::toDto).toList();
     }
 }
