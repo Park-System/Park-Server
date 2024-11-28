@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import parkSystem.park.common.dto.response.CommonResponse;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawReqDTO;
+import parkSystem.park.luckDraw.dto.response.LuckDrawJoinResDTO;
 import parkSystem.park.luckDraw.dto.response.LuckDrawRaffleResDTO;
 import parkSystem.park.luckDraw.service.facade.LuckyDrawService;
 import parkSystem.park.luckDraw.service.facade.MemberLuckDrawService;
@@ -29,10 +30,9 @@ public class LuckyDrawController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<CommonResponse> joinLuckyDraw(@RequestBody LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
-        memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
-        CommonResponse commonResponse = new CommonResponse("200 OK", "럭키 드로우 이벤트 참여 완료.");
-        return new ResponseEntity<>(commonResponse, HttpStatus.OK);
+    public ResponseEntity<LuckDrawJoinResDTO> joinLuckyDraw(@RequestBody LuckyDrawJoinReqDTO luckyDrawJoinReqDTO){
+        LuckDrawJoinResDTO luckDrawJoinResDTO = memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
+        return new ResponseEntity<>(luckDrawJoinResDTO, HttpStatus.OK);
     }
 
     @PostMapping("/raffle")

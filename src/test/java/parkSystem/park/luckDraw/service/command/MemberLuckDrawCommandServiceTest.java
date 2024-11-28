@@ -14,11 +14,13 @@ import parkSystem.park.luckDraw.domain.Prizes;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawReqDTO;
 import parkSystem.park.luckDraw.dto.request.PrizesReqDTO;
+import parkSystem.park.luckDraw.dto.response.LuckDrawJoinResDTO;
 import parkSystem.park.luckDraw.repository.LuckyDrawRepository;
 import parkSystem.park.luckDraw.service.facade.LuckyDrawService;
 import parkSystem.park.luckDraw.service.facade.MemberLuckDrawService;
 import parkSystem.park.luckDraw.service.facade.PrizesService;
 import parkSystem.park.luckDraw.service.query.LuckDrawQueryService;
+import parkSystem.park.luckDraw.service.query.MemberLuckDrawQueryService;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.domain.enums.UserType;
@@ -46,6 +48,8 @@ class MemberLuckDrawCommandServiceTest {
     MemberRepository memberRepository;
     @Autowired
     LuckyDrawRepository luckyDrawRepository;
+    @Autowired
+    MemberLuckDrawQueryService memberLuckDrawQueryService;
 
     @BeforeEach
     void setUp(){
@@ -95,7 +99,9 @@ class MemberLuckDrawCommandServiceTest {
 
         //when
         LuckyDrawJoinReqDTO luckyDrawJoinReqDTO = new LuckyDrawJoinReqDTO(member.getId(), luckDraw.getId());
-        MemberLuckDraw memberLuckDraw = memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
+        LuckDrawJoinResDTO luckDrawJoinResDTO = memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
+        List<MemberLuckDraw> memberLuckDrawList = memberLuckDrawQueryService.findByLuckDrawId(luckDraw.getId());
+        MemberLuckDraw memberLuckDraw = memberLuckDrawList.get(0);
 
         //then
         Assertions.assertThat(memberLuckDraw.getMember().getUsername()).isEqualTo("test");

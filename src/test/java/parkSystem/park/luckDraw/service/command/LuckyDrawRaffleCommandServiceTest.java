@@ -86,7 +86,7 @@ class LuckyDrawRaffleCommandServiceTest {
 
         for (Member member : memberList) {
             LuckyDrawJoinReqDTO luckyDrawJoinReqDTO = new LuckyDrawJoinReqDTO(member.getId(), luckDraw.getId());
-            MemberLuckDraw memberLuckDraw = memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
+            memberLuckDrawService.joinLuckyDraw(luckyDrawJoinReqDTO);
         }
 
         List<MemberLuckDraw> memberLuckDrawList = memberLuckDrawRepository.findAll();
