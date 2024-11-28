@@ -10,7 +10,7 @@ import parkSystem.park.luckDraw.repository.PrizesRepository;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PrizesQueryService {
 

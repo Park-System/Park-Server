@@ -9,7 +9,7 @@ import parkSystem.park.luckDraw.repository.WinnersRepository;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class WinnersQueryService {
 
