@@ -32,8 +32,8 @@ public class MemberLuckDrawCommandService {
         Long luckDrawId = luckyDrawJoinReqDTO.luckDraw_id();
         Long memberId = luckyDrawJoinReqDTO.member_id();
 
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                ()-> new NotFoundMemberException("멤버 아이디가 존재하지 않습니다, memberId : " + memberId));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()-> new NotFoundMemberException("멤버 아이디가 존재하지 않습니다, memberId : " + memberId));
         LuckDraw luckDraw = luckDrawQueryService.findLuckDrawById(luckDrawId);
 
         MemberLuckDraw memberLuckDraw = MemberLuckDraw.builder()
