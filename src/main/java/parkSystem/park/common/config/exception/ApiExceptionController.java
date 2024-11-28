@@ -11,6 +11,7 @@ import parkSystem.park.coupon.exception.CouponEmptyException;
 import parkSystem.park.coupon.exception.NotFoundCouponEventException;
 import parkSystem.park.coupon.exception.NotFoundCouponException;
 import parkSystem.park.luckDraw.exception.NotFoundLuckyDrawException;
+import parkSystem.park.luckDraw.exception.NotFoundMemberException;
 
 @RestController
 @Slf4j
@@ -70,8 +71,15 @@ public class ApiExceptionController {
     public ResponseEntity<ErrorResult> notFoundLuckyDrawException(NotFoundLuckyDrawException ex) {
         log.error("[exceptionHandle] ex", ex);
 
-        return new ResponseEntity<>(ErrorResult.toDto("BAD_REQUEST", ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundMemberException.class)
+    public ResponseEntity<ErrorResult> notFoundMemberException(NotFoundMemberException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.luckDraw.domain.LuckDraw;
 import parkSystem.park.luckDraw.domain.MemberLuckDraw;
 import parkSystem.park.luckDraw.dto.request.LuckyDrawJoinReqDTO;
+import parkSystem.park.luckDraw.exception.NotFoundMemberException;
 import parkSystem.park.luckDraw.repository.MemberLuckDrawRepository;
 import parkSystem.park.luckDraw.service.query.LuckDrawQueryService;
 import parkSystem.park.member.domain.Member;
@@ -31,7 +32,8 @@ public class MemberLuckDrawCommandService {
         Long luckDrawId = luckyDrawJoinReqDTO.luckDraw_id();
         Long memberId = luckyDrawJoinReqDTO.member_id();
 
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                ()-> new NotFoundMemberException("멤버 아이디가 존재하지 않습니다, memberId : " + memberId));
         LuckDraw luckDraw = luckDrawQueryService.findLuckDrawById(luckDrawId);
 
         MemberLuckDraw memberLuckDraw = MemberLuckDraw.builder()
