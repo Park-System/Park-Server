@@ -16,7 +16,7 @@ public class PrizesService {
 
     private final PrizesCommandService prizesCommandService;
 
-    public List<Prizes> createPrizes(List<PrizesReqDTO> prizesReqDtoList){
+    public List<Prizes> createPrizes(List<PrizesReqDTO> prizesReqDtoList){ // 럭키 드로우 경품 등록
         return prizesCommandService.createPrizes(prizesReqDtoList);
     }
 }

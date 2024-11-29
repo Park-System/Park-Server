@@ -1,12 +1,11 @@
 package parkSystem.park.luckDraw.domain;
 
-
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import parkSystem.park.member.domain.Member;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,14 +17,23 @@ public class Winners {
     @Column(name = "winners_id")
     private Long id;
 
-    private LocalDateTime winDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prize_id")
+    @JoinColumn(name = "luckDraw_id")
+    private LuckDraw luckDraw;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prizes_id")
     private Prizes prizes;
 
-    public Winners(LocalDateTime winDate, Prizes prizes) {
-        this.winDate = winDate;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Builder
+    public Winners(Long id, LuckDraw luckDraw, Prizes prizes, Member member) {
+        this.id = id;
+        this.luckDraw = luckDraw;
         this.prizes = prizes;
+        this.member = member;
     }
 }

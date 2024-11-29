@@ -16,6 +16,10 @@ public class LuckyDrawCommandService {
 
     private final LuckyDrawRepository luckyDrawRepository;
 
+    /**
+     * 럭키 드로우 이벤트 등록 서비스
+     */
+
     public LuckDraw createLuckyDraw(LuckyDrawReqDTO luckyDrawReqDTO){
         LuckDraw luckDraw = LuckDraw.builder()
                 .drawTitle(luckyDrawReqDTO.drawTitle())

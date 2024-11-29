@@ -1,9 +1,7 @@
 package parkSystem.park.member.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.domain.enums.UserType;
 

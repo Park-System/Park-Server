@@ -8,7 +8,7 @@ import parkSystem.park.luckDraw.exception.NotFoundLuckyDrawException;
 import parkSystem.park.luckDraw.repository.LuckyDrawRepository;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LuckDrawQueryService {
 

@@ -24,6 +24,10 @@ public class PrizesCommandService {
     private final LuckDrawQueryService luckDrawQueryService;
     private final PrizesRepository prizesRepository;
 
+    /**
+     * 럭키 드로우 경품 등록 서비스
+     */
+
     public List<Prizes> createPrizes(List<PrizesReqDTO> prizesReqDtoList){
 
         List<Prizes> list = new ArrayList<>();
