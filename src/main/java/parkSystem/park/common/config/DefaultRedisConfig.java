@@ -25,7 +25,6 @@ public class DefaultRedisConfig extends RedisConfig{
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setConnectionFactory(defaultRedisConnectionFactory());
-
         return redisTemplate;
     }
 
@@ -34,9 +33,7 @@ public class DefaultRedisConfig extends RedisConfig{
     public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
 
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-
         container.setConnectionFactory(connectionFactory);
-
         return container;
     }
 

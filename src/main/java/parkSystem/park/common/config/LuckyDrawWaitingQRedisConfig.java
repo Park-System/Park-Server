@@ -23,7 +23,6 @@ public class LuckyDrawWaitingQRedisConfig extends RedisConfig{
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setConnectionFactory(luckyDrawRedisConnectionFactory());
-
         return redisTemplate;
     }
 }
