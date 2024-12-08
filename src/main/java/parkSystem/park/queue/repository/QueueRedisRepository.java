@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static parkSystem.park.queue.QueueConst.*;
@@ -27,7 +29,7 @@ public class QueueRedisRepository {
 
     // 참가자 추가
     public void addParticipant(String userId) {
-        redisTemplate.opsForZSet().add(PARTICIPANTS_KEY, userId, System.currentTimeMillis());
+        redisTemplate.opsForZSet().add(PARTICIPANTS_KEY, userId, System.currentTimeMillis()+EXPIRATION_TIME);
     }
 
     // 대기열 추가
@@ -36,20 +38,30 @@ public class QueueRedisRepository {
     }
 
     // 참여자에서 제거
-    public boolean removeParticipant(String userId) {
-        return redisTemplate.opsForZSet().remove(PARTICIPANTS_KEY, userId) > 0; // 예외 처리 필요, NPE 발생
+    public Long removeParticipant(String userId) {
+        return redisTemplate.opsForZSet().remove(PARTICIPANTS_KEY, userId); // 예외 처리 필요, NPE 발생
     }
 
-    // 대기열에서 한 명을 꺼내기
-    public Long popFromWaitingList() {
+    // 대기열에서 꺼낸 후 참가자로 이동
+    public List<Long> popFromWaitingList(int count) {
+        Set<String> nextUsers = redisTemplate.opsForZSet().range(WAITING_KEY, 0, count-1);
 
-        Set<String> nextUsers = redisTemplate.opsForZSet().range(WAITING_KEY, 0, 0);
         if (nextUsers != null && !nextUsers.isEmpty()) {
-            String nextMemberId = nextUsers.iterator().next();
-            redisTemplate.opsForZSet().remove(WAITING_KEY, nextMemberId);
-            return Long.valueOf(nextMemberId); // String -> Long으로 변환
+            List<Long> waitingList = new ArrayList<>();
+
+            nextUsers.forEach(nextMemberId -> {
+                redisTemplate.opsForZSet().remove(WAITING_KEY, nextMemberId);
+                waitingList.add(Long.valueOf(nextMemberId));
+            });
+
+            return waitingList;
         }
         return null;
+    }
+
+    // 시간이 만료된 참가자 삭제
+    public Long removeExpireParticipants(){
+        return redisTemplate.opsForZSet().remove(PARTICIPANTS_KEY, 0, System.currentTimeMillis());
     }
 
     // 현재 참여자 목록 조회
@@ -61,4 +73,5 @@ public class QueueRedisRepository {
     public Set<String> getWaiting() {
         return redisTemplate.opsForZSet().range(WAITING_KEY, 0, -1);
     }
+
 }

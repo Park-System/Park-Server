@@ -24,7 +24,9 @@ public class QueueController {
         String accessToken = request.getHeader("access");
         String username = jwtTokenProvider.getAuthentication(accessToken).getName();
 
-        queueService.LuckyDrawParticipate(username, luckDrawId);
+        boolean Ok = queueService.luckDrawParticipateVerify(username);
+        if(!Ok) queueService.LuckyDrawParticipate(username);
+
         return null;
     }
 }
