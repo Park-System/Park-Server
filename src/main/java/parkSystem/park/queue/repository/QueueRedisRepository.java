@@ -24,11 +24,13 @@ public class QueueRedisRepository {
 
     // 현재 참여자 수
     public long getParticipantCount() {
-        return redisTemplate.opsForZSet().size(PARTICIPANTS_KEY); // 예외 처리 필요, NPE 발생
+        Long count = redisTemplate.opsForZSet().size(PARTICIPANTS_KEY);// 예외 처리 필요, NPE 발생
+        return (count!=null) ? count : 0L;
     }
 
     public long getWaitingCount(){
-        return redisTemplate.opsForZSet().size(WAITING_KEY); // 예외 처리 필요, NPE 발생
+        Long count = redisTemplate.opsForZSet().size(WAITING_KEY);// 예외 처리 필요, NPE 발생
+        return (count!=null) ? count : 0L;
     }
 
     // 참가자 추가
