@@ -51,6 +51,7 @@ class QueueCommandServiceTest {
     @AfterEach
     void cleanUp(){
         queueRedisRepository.clear();
+        memberRepository.deleteAll();
     }
 
     @Test
