@@ -61,7 +61,7 @@ public class QueueRedisRepository {
 
     // 시간이 만료된 참가자 삭제
     public Long removeExpireParticipants(){
-        return redisTemplate.opsForZSet().remove(PARTICIPANTS_KEY, 0, System.currentTimeMillis());
+        return redisTemplate.opsForZSet().removeRangeByScore(PARTICIPANTS_KEY, 0, System.currentTimeMillis());
     }
 
     // 현재 참여자 목록 조회
