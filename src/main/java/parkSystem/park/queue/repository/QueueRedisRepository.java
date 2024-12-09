@@ -27,6 +27,10 @@ public class QueueRedisRepository {
         return redisTemplate.opsForZSet().size(PARTICIPANTS_KEY); // 예외 처리 필요, NPE 발생
     }
 
+    public long getWaitingCount(){
+        return redisTemplate.opsForZSet().size(WAITING_KEY); // 예외 처리 필요, NPE 발생
+    }
+
     // 참가자 추가
     public void addParticipant(String userId) {
         redisTemplate.opsForZSet().add(PARTICIPANTS_KEY, userId, System.currentTimeMillis()+EXPIRATION_TIME);
@@ -72,6 +76,10 @@ public class QueueRedisRepository {
     // 대기열 목록 조회
     public Set<String> getWaiting() {
         return redisTemplate.opsForZSet().range(WAITING_KEY, 0, -1);
+    }
+
+    public void clear(){
+        redisTemplate.getConnectionFactory().getConnection().flushDb();
     }
 
 }

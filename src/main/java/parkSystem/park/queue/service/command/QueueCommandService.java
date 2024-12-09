@@ -44,6 +44,7 @@ public class QueueCommandService {
                 () -> new NotFoundMemberException("멤버가 존재 하지 않습니다."));
 
         long participantCount = queueRedisRepository.getParticipantCount();
+        log.info("참가자 카운트 : {}", participantCount);
 
         if (participantCount < MAX_PARTICIPANTS) {
             // 참여자 수가 50명 미만일 때, 참여자로 추가

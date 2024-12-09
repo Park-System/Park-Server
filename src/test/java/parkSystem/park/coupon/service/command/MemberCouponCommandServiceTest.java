@@ -90,11 +90,6 @@ class MemberCouponCommandServiceTest {
             memberRepository.save(member);
         }
 
-        List<Member> all = memberRepository.findAll();
-        for (Member member : all) {
-            log.info("{}",member.getUsername());
-        }
-
     }
 
     @AfterEach
