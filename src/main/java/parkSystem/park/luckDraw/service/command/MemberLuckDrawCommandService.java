@@ -13,6 +13,8 @@ import parkSystem.park.luckDraw.repository.MemberLuckDrawRepository;
 import parkSystem.park.luckDraw.service.query.LuckDrawQueryService;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.repository.MemberRepository;
+import parkSystem.park.queue.exception.ExpiredParticipationTimeException;
+import parkSystem.park.queue.service.facade.QueueService;
 
 @Service
 @Transactional
@@ -23,6 +25,7 @@ public class MemberLuckDrawCommandService {
     private final MemberRepository memberRepository;
     private final LuckDrawQueryService luckDrawQueryService;
     private final MemberLuckDrawRepository memberLuckDrawRepository;
+    private final QueueService queueService;
 
     /**
      * 럭키 드로우 참여 서비스
@@ -42,7 +45,11 @@ public class MemberLuckDrawCommandService {
                 .member(member)
                 .build();
 
+        boolean participateOK = queueService.luckDrawParticipateVerify(member.getUsername()).participateOK();
+        if(!participateOK) throw new ExpiredParticipationTimeException("유효시간 3분이 만료되었습니다.");
+
         MemberLuckDraw saveMemberLuckDraw = memberLuckDrawRepository.save(memberLuckDraw);
+        queueService.removeLuckyDrawParticipate(member.getUsername());
         return LuckDrawJoinResDTO.toDto(saveMemberLuckDraw);
     }
 

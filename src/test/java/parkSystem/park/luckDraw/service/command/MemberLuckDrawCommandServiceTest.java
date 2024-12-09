@@ -2,6 +2,7 @@ package parkSystem.park.luckDraw.service.command;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,8 @@ import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.domain.enums.UserType;
 import parkSystem.park.member.repository.MemberRepository;
+import parkSystem.park.queue.repository.QueueRedisRepository;
+import parkSystem.park.queue.service.facade.QueueService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -50,6 +53,10 @@ class MemberLuckDrawCommandServiceTest {
     LuckyDrawRepository luckyDrawRepository;
     @Autowired
     MemberLuckDrawQueryService memberLuckDrawQueryService;
+    @Autowired
+    QueueService queueService;
+    @Autowired
+    QueueRedisRepository queueRedisRepository;
 
     @BeforeEach
     void setUp(){
@@ -85,6 +92,11 @@ class MemberLuckDrawCommandServiceTest {
 
     }
 
+    @AfterEach
+    void cleanUp(){
+        queueRedisRepository.clear();
+    }
+
     @Test
     @DisplayName("럭키 드로우 참여 테스트")
     void joinLuckyDraw(){
@@ -93,6 +105,8 @@ class MemberLuckDrawCommandServiceTest {
         Member member = memberRepository.findByUsername("test").get();
         List<LuckDraw> all = luckyDrawRepository.findAll();
         LuckDraw luckDraw = all.get(0);
+
+        queueService.LuckyDrawParticipate(member.getUsername());
 
         log.info("{}",member.getUsername());
         log.info("{}",luckDraw.getDrawTitle());

@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import parkSystem.park.coupon.dto.request.CouponEventPublishReqDTO;
 import parkSystem.park.coupon.exception.CouponEmptyException;
 import parkSystem.park.coupon.repository.CouponEventRepository;
 import parkSystem.park.coupon.repository.CouponRepository;
+import parkSystem.park.coupon.repository.MemberCouponRepository;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.repository.MemberRepository;
@@ -46,9 +48,12 @@ class MemberCouponCommandServiceTest {
     CouponRepository couponRepository;
     @Autowired
     CouponEventRepository couponEventRepository;
+    @Autowired
+    MemberCouponRepository memberCouponRepository;
 
     @BeforeEach
     public void setUp() throws InterruptedException {
+
         //given
         Coupon coupon = Coupon.builder()
                 .count(50)
@@ -85,11 +90,15 @@ class MemberCouponCommandServiceTest {
             memberRepository.save(member);
         }
 
-        List<Member> all = memberRepository.findAll();
-        for (Member member : all) {
-            log.info("{}",member.getUsername());
-        }
+    }
 
+    @AfterEach
+    void cleanUp() {
+        // 테스트 후 데이터 삭제
+        memberCouponRepository.deleteAll();
+        couponEventRepository.deleteAll();
+        couponRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
     @Test
