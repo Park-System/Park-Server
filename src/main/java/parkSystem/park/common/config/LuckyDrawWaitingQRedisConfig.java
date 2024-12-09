@@ -12,7 +12,7 @@ public class LuckyDrawWaitingQRedisConfig extends RedisConfig{
 
     @Bean
     public RedisConnectionFactory luckyDrawRedisConnectionFactory() {
-        return createLettuceConnectionFactory(1);  // Redis DB 선택
+        return createLettuceConnectionFactory(1);  // Redis DB 선택(럭키 드로우 대기열 Redis)
     }
 
     @Bean

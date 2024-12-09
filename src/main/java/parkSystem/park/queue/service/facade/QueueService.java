@@ -30,10 +30,16 @@ public class QueueService {
         queueCommandService.luckyDrawParticipate(username);
     }
 
+    /**
+     * 럭키 드로우 참가 완료한 경우, 참가열에서 제거 + 대기열 대기자 -> 참가열로 이동시키는 서비스
+     */
     public void removeLuckyDrawParticipate(String username){
         queueCommandService.removeLuckyDrawParticipate(username);
     }
 
+    /**
+     * 참가열에서 유효시간이 만료된 참가자를 삭제하고, 대기열 대기자 -> 참가열로 이동시키는 서비스(스케쥴러에 의해 동작)
+     */
     public void waitingToParticipate(){
         queueCommandService.waitingToParticipate();
     }

@@ -19,7 +19,7 @@ public class RedisConfig {
         final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
-        redisStandaloneConfiguration.setDatabase(dbIndex);
+        redisStandaloneConfiguration.setDatabase(dbIndex); // redis MultiDataBase 사용을 위해 redis index 설정 추가
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 }

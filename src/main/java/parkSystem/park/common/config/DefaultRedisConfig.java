@@ -15,7 +15,7 @@ public class DefaultRedisConfig extends RedisConfig{
     @Bean
     @Primary
     public RedisConnectionFactory defaultRedisConnectionFactory() {
-        return createLettuceConnectionFactory(0);  // Redis DB 선택
+        return createLettuceConnectionFactory(0);  // Redis DB 선택(예약 관련 Redis)
     }
 
     @Bean

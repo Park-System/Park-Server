@@ -76,9 +76,11 @@ public class QueueCommandService {
     }
 
     public void waitingToParticipate(){
+        // 참가열에서 만료된 참가자를 제거, expiredCount : 제거된 행의 수
         Long expiredCount = queueRedisRepository.removeExpireParticipants();
         if(expiredCount==0) return;
 
+        // 제거된 행의 수 만큼, 대기열 대기자 -> 참가열로 이동
         List<Long> waitingList = queueRedisRepository.popFromWaitingList(expiredCount.intValue());
         if(waitingList!=null){
             waitingList.forEach(memberId ->

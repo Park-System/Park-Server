@@ -17,7 +17,7 @@ public class QueueRedisRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public QueueRedisRepository(
+    public QueueRedisRepository( // 1번 redis index, 럭키드로우 대기열 redis 의존성 주입
             @Qualifier("luckyDrawRedisTemplate") RedisTemplate<String, String> redisTemplate){
         this.redisTemplate=redisTemplate;
     }
