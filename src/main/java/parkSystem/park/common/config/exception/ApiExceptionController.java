@@ -12,6 +12,7 @@ import parkSystem.park.coupon.exception.NotFoundCouponEventException;
 import parkSystem.park.coupon.exception.NotFoundCouponException;
 import parkSystem.park.luckDraw.exception.NotFoundLuckyDrawException;
 import parkSystem.park.luckDraw.exception.NotFoundMemberException;
+import parkSystem.park.queue.exception.ExpiredParticipationTimeException;
 import parkSystem.park.queue.exception.NotFoundWaitingPositionException;
 
 @RestController
@@ -91,4 +92,11 @@ public class ApiExceptionController {
         return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ExpiredParticipationTimeException.class)
+    public ResponseEntity<ErrorResult> expiredParticipationTimeException(ExpiredParticipationTimeException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
 }

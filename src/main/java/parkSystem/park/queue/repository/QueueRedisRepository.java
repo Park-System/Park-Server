@@ -68,12 +68,12 @@ public class QueueRedisRepository {
         return redisTemplate.opsForZSet().removeRangeByScore(PARTICIPANTS_KEY, 0, System.currentTimeMillis());
     }
 
-    // 현재 참여자 목록 조회
+    // 전체 참여자 목록 조회
     public Set<String> getParticipants() {
         return redisTemplate.opsForZSet().range(PARTICIPANTS_KEY, 0, -1);
     }
 
-    // 대기열 목록 조회
+    // 전체 대기열 목록 조회
     public Set<String> getWaiting() {
         return redisTemplate.opsForZSet().range(WAITING_KEY, 0, -1);
     }
