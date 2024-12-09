@@ -2,13 +2,13 @@ package parkSystem.park.queue.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import parkSystem.park.jwt.JwtTokenProvider;
+import parkSystem.park.queue.dto.response.QueueParticipateResDTO;
+import parkSystem.park.queue.dto.response.QueueWaitingPositionResDTO;
 import parkSystem.park.queue.service.facade.QueueService;
 
 @RestController
@@ -20,13 +20,22 @@ public class QueueController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/participate")
-    public ResponseEntity<?> luckyDrawParticipate(@RequestParam Long luckDrawId, HttpServletRequest request){
+    public ResponseEntity<QueueParticipateResDTO> luckyDrawParticipate(HttpServletRequest request){
         String accessToken = request.getHeader("access");
         String username = jwtTokenProvider.getAuthentication(accessToken).getName();
 
-        boolean Ok = queueService.luckDrawParticipateVerify(username);
-        if(!Ok) queueService.LuckyDrawParticipate(username);
+        QueueParticipateResDTO queueParticipateResDTO = queueService.luckDrawParticipateVerify(username);
+        if(queueParticipateResDTO.participateOK()){
+            return new ResponseEntity<>(queueParticipateResDTO, HttpStatus.OK);
+        } else {
+            queueService.LuckyDrawParticipate(username);
+            return new ResponseEntity<>(queueParticipateResDTO, HttpStatus.CONFLICT);
+        }
+    }
 
-        return null;
+    @GetMapping("/waiting/{memberId}")
+    public ResponseEntity<QueueWaitingPositionResDTO> queueWaitingNumber(@PathVariable Long memberId){
+        QueueWaitingPositionResDTO waitingPosition = queueService.getWaitingPosition(memberId);
+        return new ResponseEntity<>(waitingPosition, HttpStatus.OK);
     }
 }

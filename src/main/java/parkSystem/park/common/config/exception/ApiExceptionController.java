@@ -12,6 +12,7 @@ import parkSystem.park.coupon.exception.NotFoundCouponEventException;
 import parkSystem.park.coupon.exception.NotFoundCouponException;
 import parkSystem.park.luckDraw.exception.NotFoundLuckyDrawException;
 import parkSystem.park.luckDraw.exception.NotFoundMemberException;
+import parkSystem.park.queue.exception.NotFoundWaitingPositionException;
 
 @RestController
 @Slf4j
@@ -77,6 +78,14 @@ public class ApiExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundMemberException.class)
     public ResponseEntity<ErrorResult> notFoundMemberException(NotFoundMemberException ex) {
+        log.error("[exceptionHandle] ex", ex);
+
+        return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundWaitingPositionException.class)
+    public ResponseEntity<ErrorResult> notFoundWaitingPositionException(NotFoundWaitingPositionException ex) {
         log.error("[exceptionHandle] ex", ex);
 
         return new ResponseEntity<>(ErrorResult.toDto("NOT_FOUND", ex.getMessage()), HttpStatus.NOT_FOUND);

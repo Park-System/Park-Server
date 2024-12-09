@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.domain.enums.UserRole;
 import parkSystem.park.member.repository.MemberRepository;
+import parkSystem.park.queue.dto.response.QueueParticipateResDTO;
 import parkSystem.park.queue.repository.QueueRedisRepository;
 import parkSystem.park.queue.service.facade.QueueService;
 
@@ -96,12 +97,13 @@ class QueueCommandServiceTest {
         }
 
         //when(user5는 참가열 상태, user70은 대기열인 상태)
-        boolean user5 = queueService.luckDrawParticipateVerify("user5");
-        boolean user70 = queueService.luckDrawParticipateVerify("user70");
+        QueueParticipateResDTO user5 = queueService.luckDrawParticipateVerify("user5");
+        QueueParticipateResDTO user70 = queueService.luckDrawParticipateVerify("user70");
+
 
         //then
-        Assertions.assertThat(user5).isTrue();
-        Assertions.assertThat(user70).isFalse();
+        Assertions.assertThat(user5.participateOK()).isTrue();
+        Assertions.assertThat(user70.participateOK()).isFalse();
     }
 
     @Test

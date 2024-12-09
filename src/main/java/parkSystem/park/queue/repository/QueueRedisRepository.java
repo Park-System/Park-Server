@@ -78,6 +78,15 @@ public class QueueRedisRepository {
         return redisTemplate.opsForZSet().range(WAITING_KEY, 0, -1);
     }
 
+    // 대기 순번 확인
+    public Long getWaitingPosition(String memberId){
+        Long rank = redisTemplate.opsForZSet().rank(WAITING_KEY, memberId);
+
+        if(rank==null) return -1L;
+        else return rank+1;
+    }
+
+    // 레디스 데이터 초기화(테스트 시 사용을 위함)
     public void clear(){
         redisTemplate.getConnectionFactory().getConnection().flushDb();
     }

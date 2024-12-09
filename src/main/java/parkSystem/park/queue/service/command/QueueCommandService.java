@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import parkSystem.park.luckDraw.exception.NotFoundMemberException;
 import parkSystem.park.member.domain.Member;
 import parkSystem.park.member.repository.MemberRepository;
+import parkSystem.park.queue.dto.response.QueueParticipateResDTO;
 import parkSystem.park.queue.repository.QueueRedisRepository;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class QueueCommandService {
     private final QueueRedisRepository queueRedisRepository;
     private final MemberRepository memberRepository;
 
-    public boolean luckDrawParticipateVerify(String username){
+    public QueueParticipateResDTO luckDrawParticipateVerify(String username){
 
         Member member = memberRepository.findByUsername(username).orElseThrow(
                 () -> new NotFoundMemberException("멤버가 존재 하지 않습니다."));
@@ -35,7 +36,7 @@ public class QueueCommandService {
                 .map(Long::valueOf)
                 .anyMatch(memberId -> memberId.equals(member.getId())); // member.getId()와 일치하는지 체크
 
-        return participateOK;
+        return QueueParticipateResDTO.toDTO(member, participateOK);
     }
 
     public void luckyDrawParticipate(String username){
